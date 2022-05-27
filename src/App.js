@@ -1,9 +1,10 @@
 import './App.css';
 
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Router, Routes } from 'react-router-dom';
 import { Navbar, Proizvodi, Korisnici, HomePage, Registracija, Prijava, Vezbe, Clanarine, Planovi } from './components';
 import { render } from 'react-dom';
 import { Component } from 'react';
+import authService from './services/auth-service';
 
 function App(){
   return (

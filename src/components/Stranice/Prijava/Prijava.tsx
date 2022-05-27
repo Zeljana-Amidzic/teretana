@@ -32,7 +32,7 @@ export default function Prijava() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
+      username: data.get('username'),
       password: data.get('lozinka'),
     });
   };
@@ -57,10 +57,10 @@ export default function Prijava() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Adresa"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Korisnicko ime"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField

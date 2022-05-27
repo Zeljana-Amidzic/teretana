@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from '@material-ui/core';
 
 import Proizvod from "./Proizvod/Proizvod";
@@ -7,14 +7,24 @@ import proteinc from "C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/
 import proteinv from "C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/pics/protein-v.jpg";
 
 import useStyles from './styles';
+import axios from "axios";
+import service from 'C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/services/proizvod-service.js'
 
-const proizvodi = [
-    {idproizvod: 1, naziv: "Protein cokolada", cena: 198.89, netotezina:"100 gr", vrstaproizvoda:"Proteini", stanje: 2, slika: proteinc},
-    {idproizvod: 2, naziv: "Protein vanila", cena: 148.89, netotezina:"100 gr", vrstaproizvoda:"Proteini", stanje: 20, slika: proteinv}
-]
+function Proizvodi() {
 
-const Proizvodi = () => {
     const classes = useStyles();
+
+    const [proizvodi, setProizvode] = useState([]);
+
+    useEffect(() => {
+        axios.get(service.getAll()).then(res => {
+            console.log()
+            setProizvode(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [])
 
     return (
         <main className={classes.content}>

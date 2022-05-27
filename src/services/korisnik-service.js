@@ -1,8 +1,13 @@
 import http from "../http-common";
 
+import { API_KORISNIK } from "../api_routes";
+import axios from "axios";
+import authHeader from "./auth-header";
+
 class KorisnikService {
   getAll(){
-    return http.get("/korisnik");
+    //return http.get("/korisnik");
+    return axios.get(API_KORISNIK, {headers: authHeader()});
   }
 
   getAllKorisnike(number, size, sort, keyword){
