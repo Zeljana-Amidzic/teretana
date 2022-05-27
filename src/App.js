@@ -1,7 +1,7 @@
 import './App.css';
 
 import { Link, Route, Router, Routes } from 'react-router-dom';
-import { Navbar, Proizvodi, Korisnici, HomePage, Registracija, Prijava, Vezbe, Clanarine, Planovi } from './components';
+import { Navbar, Proizvodi, Korisnici, HomePage, Registracija, Prijava, Vezbe, Clanarine, Planovi, Korisnik } from './components';
 import { render } from 'react-dom';
 import { Component } from 'react';
 import authService from './services/auth-service';
@@ -19,6 +19,7 @@ function App(){
         <Route path='/planovi' element={<Planovi/>} />
         <Route path='/vezbe' element={<Vezbe/>} />
         <Route path='/clanarine' element={<Clanarine/>} />
+        <Route path='/profil' element={<Korisnik/>} />
       </Routes>
     </div>
   )

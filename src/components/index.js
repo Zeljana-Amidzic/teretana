@@ -7,3 +7,4 @@ export { default as Prijava } from './Stranice/Prijava/Prijava.tsx';
 export { default as Vezbe } from './Vezbe/Vezbe';
 export { default as Clanarine } from './Clanarine/Clanarine';
 export { default as Planovi } from './Planovi/Planovi';
+export { default as Korisnik } from './Korisnici/Korisnik/Korisnik';

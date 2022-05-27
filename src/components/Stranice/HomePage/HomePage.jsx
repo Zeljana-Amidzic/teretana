@@ -1,11 +1,16 @@
-import React from "react";
+import React from 'react';
+import Cards from '../../Cards';
+import FirstSection from '../../FirstSection';
+import Footer from '../../Footer';
 
-const HomePage = () => {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    )
+function HomePage() {
+  return (
+    <>
+        <FirstSection/>
+        <Cards/>
+        <Footer />
+    </>
+  );
 }
 
 export default HomePage;

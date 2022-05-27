@@ -1,54 +1,80 @@
-import React from "react";
-import { AppBar, Toolbar, IconButton, Badge, MenuItem, Menu, Typography } from "@material-ui/core";
-import { ShoppingCart } from "@material-ui/icons";
+import React, { useState, useEffect } from 'react';
+import { Button } from '../Button';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
 
-import logo from '../../pics/logo.png';
+function Navbar() {
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
 
-import useStyles from './styles.js';
-import { Link } from "react-router-dom";
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
 
-const linkStyle = {
-    margin: "1rem",
-    textDecoration: "none",
-    color: 'blue'
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
   };
 
-const Navbar = () => {
-    const classes = useStyles();
+  useEffect(() => {
+    showButton();
+  }, []);
 
-    return (
-        <>
-            <AppBar position="fixed" className={classes.appBar} color="inherit">
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        <img src={logo} alt="Commerce.js" height="25px" className={classes.image}/>
-                        Teretana Shop
-                    </Typography>
-                    <div className={classes.grow}/>
-                    <div>
-                        <ul>
-                            <Link to={"/home"} style={linkStyle}>Pocetna</Link>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul>
-                        <Link to={"/prijava"} style={linkStyle}>Prijava</Link>
-                        </ul>
-                    </div>
-                    <div>
-                        <Link to={"/registracija"} style={linkStyle}>Registruj se</Link>
-                    </div>
-                    <div className={classes.button}>
-                        <IconButton aria-label="Prikazi korpu" color="inherit">
-                            <Badge badgeContent={2} color="secondary">
-                                <ShoppingCart/>
-                            </Badge>
-                        </IconButton>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </>
-    )
+  window.addEventListener('resize', showButton);
+
+  return (
+    <>
+      <nav className='navbar'>
+        <div className='navbar-container'>
+          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+            TWS
+            <i class='fab fa-typo3' />
+          </Link>
+          <div className='menu-icon' onClick={handleClick}>
+            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+          </div>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <li className='nav-item'>
+              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                Početna
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/prijava'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Ulogujte se
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/proizvodi'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Prodavnica
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to='/registracija'
+                className='nav-links-mobile'
+                onClick={closeMobileMenu}
+              >
+                Registracija
+              </Link>
+            </li>
+          </ul>
+          {button && <Button buttonStyle='btn--outline'>Registracija</Button>}
+        </div>
+      </nav>
+    </>
+  );
 }
 
-export default Navbar
+export default Navbar;
