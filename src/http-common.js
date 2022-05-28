@@ -1,12 +1,10 @@
 import axios from "axios";
 import TokenService from "C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/services/token-service.js";
-const instance = axios.create({
-  baseURL: "http://localhost:8083/teretana",
-  headers: {
-    "Content-type": "application/json"
-  }
+
+export default axios.create({
+  baseURL: "http://localhost:8083/teretana"
 });
-instance.interceptors.request.use(
+/*instance.interceptors.request.use(
   (config) => {
     const token = TokenService.getLocalAccessToken();
     if (token) {
@@ -43,5 +41,12 @@ instance.interceptors.response.use(
     }
     return Promise.reject(err);
   }
-);
-export default instance;
+);*/
+
+export const axiosPrivate = axios.create({
+  baseURL: "http://localhost:8083/teretana",
+  headers: {
+    "Content-type": "application/json"
+  },
+  withCredentials: true
+});

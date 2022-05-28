@@ -1,33 +1,41 @@
 import { Container, makeStyles, Paper, TextField } from "@material-ui/core";
-import React from "react";
+import React, { Component } from "react";
+import authService from "../../../services/auth-service";
 
-const useStyle = makeStyles((theme) => ({
-    root: {
-        '& > *': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
-}));
+export default  class Korisnik extends Component {
+    constructor(props){
+        super(props);
 
-export default  function Korisnik() {
-    const paperStyle = {padding: '50px 20px', width: 600, margin: '20px auto'};
+        this.state = {
+            currentUser: authService.getCurrentUser()
+        };
+    }
 
-    const classes = useStyle();
+    render() {
 
-    return (
-        <Container>
-            <Paper elevation={3} style={paperStyle}>
+        const { currentUser } = this.state;
 
-            </Paper>
-            <form className={classes.root} noValidate autoComplete="off">
-                <TextField id="standard-basic" label="" variant="outlined"/>
-                <TextField id="standard-basic" label="" variant="outlined"/>
-                <TextField id="standard-basic" label="" variant="outlined"/>
-                <TextField id="standard-basic" label="" variant="outlined"/>
-                <TextField id="standard-basic" label="" variant="outlined"/>
-                <TextField id="standard-basic" label="" variant="outlined"/>
-            </form>
-        </Container>
-    );
+        return (
+            <div className="container">
+                <header className="jumbotron">
+                    <h3>
+                        <strong>{currentUser.korisnickoime}</strong> profil
+                    </h3>
+                </header>
+                <p>
+                    <strong>Token:</strong>{" "}
+                    {currentUser.accessToken.substring(0, 20)}...{" "}
+                    {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+                </p>
+                <p>
+                    <strong>Ime i prezime:</strong>{" "}
+                    {currentUser.imeprezime}
+                </p>
+                <p>
+                    <strong>Email:</strong>{" "}
+                    {currentUser.email}
+                </p>
+            </div>
+        );
+    }
 };

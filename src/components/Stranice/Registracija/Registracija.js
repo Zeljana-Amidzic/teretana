@@ -11,13 +11,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import authService from '../../../services/auth-service';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Teretana
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -27,14 +30,27 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Registracija() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('lozinka'),
-    });
+const Registracija = () => {
+  const [imeprezime, setImeprezime] = useState("");
+  const [email, setEmail] = useState("");
+  const [lozinka, setLozinka] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await authService.register(imeprezime, email, lozinka).then(
+        (response) => {
+          console.log("Registracija uspesna", response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -50,29 +66,21 @@ export default function Registracija() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Registracija
+            REGISTRACIJA
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="ime"
+                  name="imeprezime"
                   required
                   fullWidth
-                  id="ime"
-                  label="Ime"
+                  id="imeprezime"
+                  label="Ime i prezime"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="prezime"
-                  label="Prezime"
-                  name="prezime"
-                  autoComplete="family-name"
+                  value={imeprezime}
+                  onChange={(e) => setImeprezime(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -83,6 +91,8 @@ export default function Registracija() {
                   label="Email Adresa"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -94,6 +104,8 @@ export default function Registracija() {
                   type="password"
                   id="lozinka"
                   autoComplete="new-password"
+                  value={lozinka}
+                  onChange={(e) => setLozinka(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -125,3 +137,5 @@ export default function Registracija() {
     </ThemeProvider>
   );
 }
+
+export default Registracija;

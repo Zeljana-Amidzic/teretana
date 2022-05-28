@@ -1,25 +1,33 @@
-import http from "../http-common";
+import { API_PROIZVOD } from "../api_routes";
+import axios from "axios";
+import authHeader from "./auth-header";
 
-class ProizvodService {
-  getAll(){
-    return http.get("/proizvod");
-  }
-
-  getAllProizvode(number, size, sort, keyword){
-    return http.get(`/proizvod?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
-  }
-
-  create(proizvod){
-    return http.post("/proizvod", proizvod);
-  }
-
-  update(proizvod, id){
-    return http.put(`/proizvod/${id}`, proizvod);
-  }
-
-  delete(id){
-    return http.delete(`/proizvod/${id}`);
-  }
+const getAll = () => {
+  return axios.get(API_PROIZVOD);
 }
 
-export default new ProizvodService;
+const getAllProizvode = (number, size, sort, keyword) =>  {
+  return axios.get(API_PROIZVOD + `/?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`, { headers: authHeader() });
+}
+
+const insertProizvod = (proizvod) => {
+  return axios.post(API_PROIZVOD, proizvod, { headers: authHeader() });
+}
+
+const updateProizvod = (proizvod, id) => {
+  return axios.put(API_PROIZVOD + `/${id}`, proizvod, { headers: authHeader() });
+}
+
+const deleteProizvod = (id) => {
+    return axios.delete(API_PROIZVOD + `/${id}`, { headers: authHeader() });
+}
+
+const proizvodService = {
+  getAll,
+  getAllProizvode,
+  insertProizvod,
+  updateProizvod,
+  deleteProizvod,
+}
+
+export default proizvodService;

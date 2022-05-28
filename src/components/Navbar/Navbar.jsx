@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import authService from '../../services/auth-service';
 
 function Navbar() {
   const [click, setClick] = useState(false);
@@ -9,6 +10,7 @@ function Navbar() {
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
+  const [show, setShow] = useState(true);
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -17,6 +19,12 @@ function Navbar() {
       setButton(true);
     }
   };
+
+  const logout = () => {
+    authService.logout();
+    setShow(false);
+    console.log("Odjava uspesna");
+  }
 
   useEffect(() => {
     showButton();
@@ -30,7 +38,7 @@ function Navbar() {
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
             TWS
-            <i class='fab fa-typo3' />
+            <i className='fab fa-typo3' />
           </Link>
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
@@ -59,7 +67,15 @@ function Navbar() {
                 Prodavnica
               </Link>
             </li>
-
+            <li className='nav-item'>
+            {show && <Link
+                to='/'
+                className='nav-links'
+                onClick={logout}
+              >
+                Odjava
+              </Link>}
+            </li>
             <li>
               <Link
                 to='/registracija'

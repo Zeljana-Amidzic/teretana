@@ -8,10 +8,12 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import authService from "../../../services/auth-service";
 
 function Copyright(props) {
   return (
@@ -26,16 +28,38 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+class Prijava extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = this.initalState;
+  }
 
-export default function Prijava() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('lozinka'),
-    });
+  initalState = {
+    korisnickoime:'', lozinka:''
+  };
+
+  render() {
+    const theme = createTheme();
+    const [korisnickoime, setKorisnickoime] = useState("");
+    const [lozinka, setLozinka] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await authService.login(korisnickoime, lozinka).then(
+        () => {
+          navigate("/");
+          window.location.reload();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -53,15 +77,17 @@ export default function Prijava() {
           <Typography component="h1" variant="h5">
             Prijava
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="username"
+              id="korisnickoime"
               label="Korisnicko ime"
-              name="username"
+              name="korisnickoime"
               autoComplete="username"
+              value={korisnickoime}
+              onChange={(e) => setKorisnickoime(e.target.value)}
               autoFocus
             />
             <TextField
@@ -73,6 +99,8 @@ export default function Prijava() {
               type="password"
               id="lozinka"
               autoComplete="current-password"
+              value={lozinka}
+              onChange={(e) => setLozinka(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -82,9 +110,10 @@ export default function Prijava() {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={this.state.korisnickoime.length === 0 && this.state.lozinka.length === 0 }
               sx={{ mt: 3, mb: 2 }}
             >
-              Prijava.
+              Prijava
             </Button>
             <Grid container>
               <Grid item xs>
@@ -94,7 +123,7 @@ export default function Prijava() {
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {"Nemate nalog? Prijavite se."}
+                  {"Nemate nalog? Registrujte se."}
                 </Link>
               </Grid>
             </Grid>
@@ -104,4 +133,7 @@ export default function Prijava() {
       </Container>
     </ThemeProvider>
   );
+  }
 }
+
+export default Prijava;

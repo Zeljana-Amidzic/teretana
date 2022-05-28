@@ -11,8 +11,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import authService from "../../../services/auth-service";
 
-function Copyright(props: any) {
+function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -25,16 +28,28 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
+function Prijava() {
+    const theme = createTheme();
+    const [korisnickoime, setKorisnickoime] = useState("");
+    const [lozinka, setLozinka] = useState("");
 
-export default function Prijava() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('lozinka'),
-    });
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await authService.login(korisnickoime, lozinka).then(
+        () => {
+          navigate("/");
+          window.location.reload();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -52,15 +67,17 @@ export default function Prijava() {
           <Typography component="h1" variant="h5">
             Prijava
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="username"
+              id="korisnickoime"
               label="Korisnicko ime"
-              name="username"
+              name="korisnickoime"
               autoComplete="username"
+              value={korisnickoime}
+              onChange={(e) => setKorisnickoime(e.target.value)}
               autoFocus
             />
             <TextField
@@ -72,6 +89,8 @@ export default function Prijava() {
               type="password"
               id="lozinka"
               autoComplete="current-password"
+              value={lozinka}
+              onChange={(e) => setLozinka(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -104,3 +123,5 @@ export default function Prijava() {
     </ThemeProvider>
   );
 }
+
+export default Prijava;
