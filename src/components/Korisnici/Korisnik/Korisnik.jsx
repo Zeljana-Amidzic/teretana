@@ -1,5 +1,6 @@
 import { Container, makeStyles, Paper, TextField } from "@material-ui/core";
 import React, { Component } from "react";
+import { getAccountFromToken } from "../../../services/auth-one";
 import authService from "../../../services/auth-service";
 
 export default  class Korisnik extends Component {
@@ -7,7 +8,16 @@ export default  class Korisnik extends Component {
         super(props);
 
         this.state = {
-            currentUser: authService.getCurrentUser()
+            currentUser: getAccountFromToken(),
+            idkorisnik: props.idkorisnik,
+	        imeprezime: props.imeprezime,
+	        datumrodjenja: props.datumrodjenja,
+	        telefon: props.telefon,
+	        email: props.email,
+	        adresa: props.adresa,
+	        uloga: props.uloga,
+	        korisnickoime: props.korisnickoime,
+	        lozinka: props.lozinka,
         };
     }
 
@@ -19,21 +29,16 @@ export default  class Korisnik extends Component {
             <div className="container">
                 <header className="jumbotron">
                     <h3>
-                        <strong>{currentUser.korisnickoime}</strong> profil
+                        <strong>{currentUser?.imeprezime}</strong> profil
                     </h3>
                 </header>
                 <p>
-                    <strong>Token:</strong>{" "}
-                    {currentUser.accessToken.substring(0, 20)}...{" "}
-                    {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-                </p>
-                <p>
                     <strong>Ime i prezime:</strong>{" "}
-                    {currentUser.imeprezime}
+                    {currentUser?.imeprezime}
                 </p>
                 <p>
                     <strong>Email:</strong>{" "}
-                    {currentUser.email}
+                    {currentUser?.email}
                 </p>
             </div>
         );

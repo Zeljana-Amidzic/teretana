@@ -76,6 +76,15 @@ function Navbar() {
                 Odjava
               </Link>}
             </li>
+            <li className='nav-item'>
+            {show && <Link
+                to='/profil'
+                className='nav-links'
+                onClick={logout}
+              >
+                Profil
+              </Link>}
+            </li>
             <li>
               <Link
                 to='/registracija'

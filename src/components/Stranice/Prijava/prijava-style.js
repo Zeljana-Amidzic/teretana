@@ -5,15 +5,20 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import authService from "../../../services/auth-service";
+
+import Axios from 'axios';
+import { useRef, useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import useAuth from '../../../services/useAuth';
+import { LOGIN_URL } from '../../../api_routes';
+import { setAxiosInterceptors, setToken } from '../../../services/auth-one';
 
 function Copyright(props) {
   return (
@@ -28,42 +33,67 @@ function Copyright(props) {
   );
 }
 
-class Prijava extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = this.initalState;
+const Prijava = () => {
+  const { setAuth } = useAuth();
+  const theme = createTheme();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const userRef = useRef();
+  const errRef = useRef();
+
+  const [user, setUser] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+      userRef.current.focus();
+  }, [])
+
+  useEffect(() => {
+      setErrMsg('');
+  }, [user, pwd])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+        const response = await Axios.post(LOGIN_URL,
+            JSON.stringify({ user, pwd }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        );
+        console.log(JSON.stringify(response?.data));
+        //console.log(JSON.stringify(response));
+        const accessToken = response?.data?.jwt;
+        //const roles = response?.data?.roles;
+        setAuth({ user, pwd, roles, accessToken });
+        setUser('');
+        setPwd('');
+        setToken(accessToken);
+        setAxiosInterceptors();
+        navigate('/korisnik');
+    } catch (err) {
+        if (!err?.response) {
+            setErrMsg('No Server Response');
+        } else if (err.response?.status === 400) {
+            setErrMsg('Missing Username or Password');
+        } else if (err.response?.status === 401) {
+            setErrMsg('Unauthorized');
+        } else {
+            setErrMsg('Login Failed');
+        }
+        errRef.current.focus();
+    }
   }
 
-  initalState = {
-    korisnickoime:'', lozinka:''
-  };
-
-  render() {
-    const theme = createTheme();
-    const [korisnickoime, setKorisnickoime] = useState("");
-    const [lozinka, setLozinka] = useState("");
-
-    const navigate = useNavigate();
-
-    const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await authService.login(korisnickoime, lozinka).then(
-        () => {
-          navigate("/");
-          window.location.reload();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    } catch(err) {
-      console.log(err);
-    }
-  };
-
   return (
-    <ThemeProvider theme={theme}>
+    <form onSubmit={handleSubmit}>
+      <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -77,7 +107,7 @@ class Prijava extends React.Component {
           <Typography component="h1" variant="h5">
             Prijava
           </Typography>
-          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -86,8 +116,8 @@ class Prijava extends React.Component {
               label="Korisnicko ime"
               name="korisnickoime"
               autoComplete="username"
-              value={korisnickoime}
-              onChange={(e) => setKorisnickoime(e.target.value)}
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
               autoFocus
             />
             <TextField
@@ -99,8 +129,8 @@ class Prijava extends React.Component {
               type="password"
               id="lozinka"
               autoComplete="current-password"
-              value={lozinka}
-              onChange={(e) => setLozinka(e.target.value)}
+              value={pwd}
+              onChange={(e) => setPwd(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -110,7 +140,6 @@ class Prijava extends React.Component {
               type="submit"
               fullWidth
               variant="contained"
-              disabled={this.state.korisnickoime.length === 0 && this.state.lozinka.length === 0 }
               sx={{ mt: 3, mb: 2 }}
             >
               Prijava
@@ -132,8 +161,8 @@ class Prijava extends React.Component {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </form>
   );
-  }
 }
 
 export default Prijava;

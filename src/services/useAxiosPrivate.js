@@ -2,6 +2,7 @@ import { axiosPrivate } from "../http-common";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import authService from "./useAuth";
+import TokenService from "./token-service";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -11,8 +12,9 @@ const useAxiosPrivate = () => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
+                const token = TokenService.getLocalAccessToken();
                 if(!config.headers['Authorization']){
-                    config.headers['Authorization'] = `Bearer ${authService?.accesToken}`;
+                    config.headers['Authorization'] = 'Bearer ' + token;
                 }
                 return config;
             }, (error) => Promise.reject(error)

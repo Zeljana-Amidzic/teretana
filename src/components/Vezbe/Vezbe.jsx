@@ -1,32 +1,115 @@
 import React from "react";
-import { Grid } from '@material-ui/core';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
-import Vezba from './Vezba/Vezba';
+import { setAxiosInterceptors } from "../../services/auth-one";
+import { deleteVezba, getAllVezbe } from "../../services/vezba-service";
+import { Button } from "@material-ui/core";
 
-import proteinc from "C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/pics/protein-c.png";
-import proteinv from "C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/pics/protein-v.jpg";
+class Vezbe extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            vezbe: [],
+            ukupno: '',
+        };
+        this.child = React.createRef();
+        this.child2 = React.createRef();
+    }
 
-import useStyles from './vezbe-style';
+    componentDidMount(){
+        setAxiosInterceptors();
+        this.loadVezbe();
+    }
 
-const vezbe = [
-    {idvezba: 1, naziv: "Zgib", slika: proteinc},
-    {idvezba: 2, naziv: "Sklek", slika: proteinv}
-]
+    /*loadProizvode = (page, PAGE_SIZE, sortBy, keyword) => {
+        getAllProizvode(page, PAGE_SIZE, sortBy, keyword).then((resp) => {
+            this.setState({
+                ...this.state,
+                proizvodi: resp.data,
+            });
+        })
+        .catch((e) => console.log(e));
+    };*/
+    loadVezbe = () => {
+        getAllVezbe().then((resp) => {
+            this.setState({
+                ...this.state,
+                vezbe: resp.data,
+            });
+        })
+        .catch((e) => console.log(e));
+    };
 
-const Vezbe = () => {
-    const classes = useStyles();
-    return (
-        <main className={classes.content}>
-            <div className={classes.toolbar}/>
-            <Grid container justifyContent="center" spacing={4}>
+    handleEditVezbe = (vezba) => {
+        this.child.current.setState({
+            edit: true,
+            ...vezba,
+        });
+    };
+
+    handleDeleteVezba = (id) => {
+        deleteVezba(id).then(this.refreshVezba).catch((e) => console.log(e));
+    };
+
+    setUkupno = () => {
+        getAllVezbe().then((resp) => {
+            this.setState({
+                ukupno: resp.data.length,
+            });
+        }).catch((e) => console.log(e));
+    };
+
+    refreshVezbe = () => {
+        this.setUkupno();
+        this.child2.current.setState({
+            ...this.child2.current.state,
+            isDataChanged: true,
+        });
+    }
+
+    render = () => {
+        const {vezbe} = this.state;
+        console.log(vezbe);
+
+        const columns = ["ID","Naziv","Tezina","Grupa misica"]
+
+        return(
+            <TableContainer component={Paper}>
+                    <Button type="submit">Dodaj vezbu</Button>
+                    <Button type="submit">Obrisi vezbu</Button>
+                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Naziv vežbe</TableCell>
+                            <TableCell align="right">Težina izvođenja</TableCell>
+                            <TableCell align="right">Grupa mišića</TableCell>
+                        </TableRow>
+                    </TableHead>
+            <TableBody>
                 {vezbe.map((vezba) => (
-                    <Grid item key={vezba.idproizvod} xs={12} sm={6} lg={3}>
-                        <Vezba vezba={vezba}/>
-                    </Grid>
+                    <TableRow
+                        key={vezba?.naziv}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            {vezba?.naziv}
+                        </TableCell>
+                        <TableCell align="right">{vezba?.tezina}</TableCell>
+                        <TableCell align="right">{vezba?.grupamisica}</TableCell>
+                    </TableRow>
                 ))}
-            </Grid>
-        </main>
+            </TableBody>
+        </Table>
+    </TableContainer>
     )
+    }
 }
 
 export default Vezbe;

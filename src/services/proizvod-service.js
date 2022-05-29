@@ -1,33 +1,30 @@
 import { API_PROIZVOD } from "../api_routes";
-import axios from "axios";
-import authHeader from "./auth-header";
+import Axios from "axios";
 
-const getAll = () => {
-  return axios.get(API_PROIZVOD);
+/*export function getAllProizvode(number, size, sort, keyword) {
+  return Axios.get(API_PROIZVOD + `?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
+}*/
+
+export function getAllProizvode(){
+  return Axios.get(API_PROIZVOD);
 }
 
-const getAllProizvode = (number, size, sort, keyword) =>  {
-  return axios.get(API_PROIZVOD + `/?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`, { headers: authHeader() });
+export function insertProizvod(proizvod, callback) {
+  Axios.post(API_PROIZVOD, proizvod).then((resp) => {
+    callback();
+  }).catch((e) => {
+    console.log(e);
+  });
 }
 
-const insertProizvod = (proizvod) => {
-  return axios.post(API_PROIZVOD, proizvod, { headers: authHeader() });
+export function updateProizvod(proizvod, callback) {
+  Axios.put(API_PROIZVOD + `/${proizvod.idproizvod}`, proizvod).then(() => {
+    callback();
+  }).catch((e) => {
+    console.log(e);
+  });
 }
 
-const updateProizvod = (proizvod, id) => {
-  return axios.put(API_PROIZVOD + `/${id}`, proizvod, { headers: authHeader() });
+export function deleteProizvod(id) {
+    return Axios.delete(API_PROIZVOD + `/${id}`);
 }
-
-const deleteProizvod = (id) => {
-    return axios.delete(API_PROIZVOD + `/${id}`, { headers: authHeader() });
-}
-
-const proizvodService = {
-  getAll,
-  getAllProizvode,
-  insertProizvod,
-  updateProizvod,
-  deleteProizvod,
-}
-
-export default proizvodService;

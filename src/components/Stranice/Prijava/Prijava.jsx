@@ -12,8 +12,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import authService from "../../../services/auth-service";
+import { setAxiosInterceptors, setToken } from '../../../services/auth-one';
+import Axios from 'axios';
+import { API_AUTH } from '../../../api_routes';
 
 function Copyright(props) {
   return (
@@ -33,20 +36,27 @@ function Prijava() {
     const [korisnickoime, setKorisnickoime] = useState("");
     const [lozinka, setLozinka] = useState("");
 
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const login = (username, password) => {
+      return Axios.post(API_AUTH, {
+        username: username,
+        password: password,
+      });
+    }
+
+    const handleLogin = (e) => {
     e.preventDefault();
     try {
-      await authService.login(korisnickoime, lozinka).then(
-        () => {
-          navigate("/");
-          window.location.reload();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      console.log("username:"+korisnickoime+", lozinka:"+lozinka);
+      login(korisnickoime, lozinka).then((resp) => {
+        localStorage.setItem('user', JSON.stringify(resp.data));
+        setToken(resp.data.jwt);
+        setAxiosInterceptors();
+        navigate(from, { replace: true });
+      });
     } catch(err) {
       console.log(err);
     }
