@@ -87,9 +87,9 @@ class Vezbe extends React.Component {
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Naziv vežbe</TableCell>
-                            <TableCell align="right">Težina izvođenja</TableCell>
-                            <TableCell align="right">Grupa mišića</TableCell>
+                            <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Naziv vežbe</TableCell>
+                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Težina izvođenja</TableCell>
+                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Grupa mišića</TableCell>
                         </TableRow>
                     </TableHead>
             <TableBody>

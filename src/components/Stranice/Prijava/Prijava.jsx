@@ -74,8 +74,8 @@ function Prijava() {
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
-            Prijava
+          <Typography component="h1" variant="h5" style={{ fontSize: 30, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>
+            PRIJAVA
           </Typography>
           <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField

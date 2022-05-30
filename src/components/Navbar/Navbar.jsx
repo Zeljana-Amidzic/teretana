@@ -1,103 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '../Button';
+import React, { useState } from 'react';
+import * as FaIcons from 'react-icons/fa';
+import * as AiIcons from 'react-icons/ai';
+import * as IoIcons from 'react-icons/io';
 import { Link } from 'react-router-dom';
+import { Sidebar } from './Sidebar';
 import './Navbar.css';
-import authService from '../../services/auth-service';
+import { IconContext } from 'react-icons';
 
 function Navbar() {
-  const [click, setClick] = useState(false);
-  const [button, setButton] = useState(true);
+  const [sidebar, setSidebar] = useState(false);
 
-  const handleClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
-  const [show, setShow] = useState(true);
-
-  const showButton = () => {
-    if (window.innerWidth <= 960) {
-      setButton(false);
-    } else {
-      setButton(true);
-    }
-  };
-
-  const logout = () => {
-    authService.logout();
-    setShow(false);
-    console.log("Odjava uspesna");
-  }
-
-  useEffect(() => {
-    showButton();
-  }, []);
-
-  window.addEventListener('resize', showButton);
+  const showSidebar = () => setSidebar(!sidebar);
 
   return (
     <>
-      <nav className='navbar'>
-        <div className='navbar-container'>
-          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-            TWS
-            <i className='fab fa-typo3' />
+      <IconContext.Provider value={{ color: '#fff' }}>
+        <div className='navbar'>
+          <Link to='#' className='menu-bars'>
+            <FaIcons.FaBars onClick={showSidebar} />
           </Link>
-          <div className='menu-icon' onClick={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-          </div>
-          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-            <li className='nav-item'>
-              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-                Početna
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                to='/prijava'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Ulogujte se
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                to='/proizvodi'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Prodavnica
-              </Link>
-            </li>
-            <li className='nav-item'>
-            {show && <Link
-                to='/'
-                className='nav-links'
-                onClick={logout}
-              >
-                Odjava
-              </Link>}
-            </li>
-            <li className='nav-item'>
-            {show && <Link
-                to='/profil'
-                className='nav-links'
-                onClick={logout}
-              >
-                Profil
-              </Link>}
-            </li>
-            <li>
-              <Link
-                to='/registracija'
-                className='nav-links-mobile'
-                onClick={closeMobileMenu}
-              >
-                Registracija
-              </Link>
-            </li>
-          </ul>
-          {button && <Button buttonStyle='btn--outline'>Registracija</Button>}
         </div>
-      </nav>
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+          <ul className='nav-menu-items' onClick={showSidebar}>
+            <li className='navbar-toggle'>
+              <Link to='#' className='menu-bars'>
+                <AiIcons.AiOutlineClose />
+              </Link>
+            </li>
+            {Sidebar.map((item, index) => {
+              return (
+                <li key={index} className={item.cName}>
+                  <Link to={item.path}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </IconContext.Provider>
     </>
   );
 }

@@ -1,28 +1,21 @@
-import { Container, makeStyles, Paper, TextField } from "@material-ui/core";
-import React, { Component } from "react";
-import authService from "../../../services/auth-service";
+import { makeStyles } from '@material-ui/core/styles';
 
-export default  class Korisnik extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            currentUser: authService.getCurrentUser()
-        };
-    }
-
-    render() {
-
-        //const { currentUser } = this.state;
-
-        return (
-            <div className="container">
-                <header className="jumbotron">
-                    <h3>
-                        <strong>ANA</strong> profil
-                    </h3>
-                </header>
-            </div>
-        );
-    }
-};
+export default makeStyles(() => ({
+  root: {
+    maxWidth: '100%',
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+  },
+  cardActions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  cardContent: {
+    display: 'flex',
+    width: '500px',
+    height: '500px',
+    justifyContent: 'space-between',
+  },
+}));

@@ -65,7 +65,7 @@ const Registracija = () => {
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" style={{ fontSize: 30, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>
             REGISTRACIJA
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -106,12 +106,6 @@ const Registracija = () => {
                   autoComplete="new-password"
                   value={lozinka}
                   onChange={(e) => setLozinka(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>
