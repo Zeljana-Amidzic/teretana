@@ -18,7 +18,7 @@ function Cards() {
               src={slika1}
               text='Samostalno, sa bilo kog mesta, u bilo koje vreme produžite važenje članarine'
               label='Članarina'
-              path='/clanarina'
+              path='/clanarine'
             />
             <CardItem
               src={slika2}

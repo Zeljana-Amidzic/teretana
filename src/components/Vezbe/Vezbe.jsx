@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,10 +7,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import './style.css';
 
 import { setAxiosInterceptors } from "../../services/auth-one";
 import { deleteVezba, getAllVezbe } from "../../services/vezba-service";
 import { Button } from "@material-ui/core";
+import Paginate from 'react-paginate';
+import { useStepContext } from "@mui/material";
+import Vezba from "./Vezba/Vezba";
+
+const pageNumber = 1;
 
 class Vezbe extends React.Component {
     constructor(props){
@@ -74,13 +80,29 @@ class Vezbe extends React.Component {
         });
     }
 
+    setCurrentPage(num){
+        this.currentPage = num; 
+    }
+
+    changePage(selected){
+        this.pageNumber = selected;
+    }
+
+
     render = () => {
         const {vezbe} = this.state;
-        console.log(vezbe);
+        const vezbePerPage = 4;
+        let pageNumber = 1;
+    // Get current posts
+        const pageVisited = pageNumber * vezbePerPage;
+        const currentVezbe = vezbe.slice(pageVisited, pageVisited + vezbePerPage);
+        const pageCount = Math.ceil(vezbe.length / vezbePerPage);
 
-        const columns = ["ID","Naziv","Tezina","Grupa misica"]
-
+        const changePage = ({ selected }) => {
+            pageNumber = selected;
+        };
         return(
+            <>
             <TableContainer component={Paper}>
                     <Button type="submit">Dodaj vezbu</Button>
                     <Button type="submit">Obrisi vezbu</Button>
@@ -92,8 +114,8 @@ class Vezbe extends React.Component {
                             <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Grupa mišića</TableCell>
                         </TableRow>
                     </TableHead>
-            <TableBody>
-                {vezbe.map((vezba) => (
+                    <TableBody>
+                {currentVezbe.map((vezba) => (
                     <TableRow
                         key={vezba?.naziv}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -106,9 +128,21 @@ class Vezbe extends React.Component {
                     </TableRow>
                 ))}
             </TableBody>
-        </Table>
-    </TableContainer>
-    )
+                </Table>
+            </TableContainer>
+            <br/>
+            <Paginate
+            previousLabel={"Prethodna"}
+            nextLabel={"Sledeca"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+            />
+        </>)
     }
 }
 
