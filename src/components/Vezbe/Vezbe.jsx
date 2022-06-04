@@ -102,16 +102,26 @@ class Vezbe extends React.Component {
             pageNumber = selected;
         };
         return(
-            <>
+            <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
-                    <Button type="submit">Dodaj vezbu</Button>
-                    <Button type="submit">Obrisi vezbu</Button>
+                    <Button
+                    style={{backgroundColor: '#6106e0', alignItems: 'center', justifyContent: 'center', padding: 12, elevation: 3, margin: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: "center"}}>
+                        <span justifyContent="center" 
+                        style={{fontSize: 15, fontWeight: "bold", fontFamily: 'arial', color: 'white', display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'}}>Dodaj vezbu</span>
+                    </Button>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead>
+                    <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
                         <TableRow>
-                            <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Naziv vežbe</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Težina izvođenja</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Grupa mišića</TableCell>
+                            <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv vežbe</TableCell>
+                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Težina izvođenja</TableCell>
+                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Grupa mišića</TableCell>
+                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
+                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -123,8 +133,18 @@ class Vezbe extends React.Component {
                         <TableCell component="th" scope="row">
                             {vezba?.naziv}
                         </TableCell>
-                        <TableCell align="right">{vezba?.tezina}</TableCell>
-                        <TableCell align="right">{vezba?.grupamisica}</TableCell>
+                        <TableCell align="center">{vezba?.tezina}</TableCell>
+                        <TableCell align="center">{vezba?.grupamisica}</TableCell>
+                        <TableCell align="right">
+                            <Button style={{backgroundColor: '#42cc19', padding: 12, elevation: 3, alignItems: 'center', justifyContent: 'center'}}>
+                                <span style={{fontSize: 15, fontWeight: "bold", fontFamily: 'arial', color: 'white', textAlign: 'center'}}>Izmeni</span>
+                            </Button>
+                        </TableCell>
+                        <TableCell>
+                            <Button style={{backgroundColor: '#e00e06', alignItems: 'center', justifyContent: 'center', padding: 12, elevation: 3}}>
+                            <span style={{fontSize: 15, fontWeight: "bold", fontFamily: 'arial', color: 'white', justifyContent: 'center'}}>Obrisi</span>
+                            </Button>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
@@ -142,7 +162,7 @@ class Vezbe extends React.Component {
             disabledClassName={"paginationDisabled"}
             activeClassName={"paginationActive"}
             />
-        </>)
+        </div>)
     }
 }
 

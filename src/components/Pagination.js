@@ -1,25 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
-  const pageNumbers = [];
+export const Pagination = ({ onPageChange, totalPages = Infinity }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [anchoredPage, setAnchoredPage] = useState(2);
 
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
-    pageNumbers.push(i);
-  }
+    const handlePageChangeClick = (newPage) => (e) => {
+        e.preventDefault();
+        if (newPage > 0) {
+            setCurrentPage(newPage);
+            if (newPage === anchoredPage + 2) {
+                setAnchoredPage(anchoredPage + 1);
+            } else if (newPage === anchoredPage - 2) {
+                setAnchoredPage(anchoredPage - 1);
+            }
+            onPageChange(newPage);
+        }
+    }
 
-  return (
-    <nav>
-      <ul className='pagination'>
-        {pageNumbers.map(number => (
-          <li key={number} className='page-item'>
-            <a onClick={() => paginate(number)} href='!#' className='page-link'>
-              {number}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-};
-
-export default Pagination;
+    return(
+      <div className="card-footer py-4 bg-dark">
+        <ul className="pagination justify-content-end mb-0">
+          {
+            currentPage !== 1 &&
+            <li>
+              <Link to="/"
+              className="page-link bg-dark tex-white border-gray"
+              style={{ color: 'white' }}
+              onClick={handlePageChangeClick(currentPage - 1)}>
+              <i className="fa fa-angle-left"></i>
+              </Link>
+            </li>
+          }{
+            [anchoredPage - 1, anchoredPage, anchoredPage + 1].map((page, i) =>
+              page <= totalPages &&
+              <li key={i} className={`page-item ${page === currentPage ? 'transparent' : ''}`}>
+                <Link to="/"
+                className={`page-link ${page === currentPage ? 'border-darker bg-darker' : 'border-gray bg-dark'}`}
+                onClick={handlePageChangeClick(page)}>
+                </Link>
+              </li>
+            )
+          }{
+            currentPage < totalPages &&
+            <li className="page-item">
+                <Link
+                    to="/"
+                    className="page-link bg-dark tex-white border-gray"
+                    style={{ color: 'white' }}
+                    onClick={handlePageChangeClick(currentPage + 1)}
+                >
+                    <i className="fa fa-angle-right" ></i>
+                </Link>
+            </li>
+        }
+        </ul>
+      </div>
+    )
+}

@@ -12,7 +12,7 @@ import useAxiosPrivate from "../../services/useAxiosPrivate";
 import service, { deleteProizvod, getAllProizvode } from 'C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/services/proizvod-service.js';
 import { API_PROIZVOD } from "../../api_routes";
 import useRefreshToken from "../../services/useRefreshToken";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { setAxiosInterceptors } from "../../services/auth-one";
 
 const PAGE_SIZE = 2;
@@ -101,7 +101,18 @@ class Proizvodi extends Component{
                         stanje={proizvod.stanje}/>
                     </Grid>
                 ))}
-            </Grid>) : <p>Nema proizvoda za prikazivanje</p>
+            </Grid>) : 
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100vh'
+                }}>
+                <h1>Niste prijavljeni, nema proizvoda za prikazivanje...</h1>
+                <Link to="/prijava" className="btn btn-primary">
+                Prijavi se
+                </Link>
+                </div>
             }
         </main>
         )

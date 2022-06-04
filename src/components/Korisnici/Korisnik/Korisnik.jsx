@@ -8,6 +8,8 @@ import { Button, Grid } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } from "@material-ui/core";
 import useStyles from './korisnik-style';
+import { Input } from "@mui/material";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PAGE_SIZE = 2;
 const INITAL_PAGE = 1;
@@ -31,11 +33,19 @@ export default  class Korisnik extends Component {
         setAxiosInterceptors();
     }
 
-    handleUpdate = (korisnik) =>{
+    handleUpdate = (korisnik) => (e) => {
         this.child.current.setState({
             edit: true,
             ...korisnik,
         });
+    }
+
+    changeHandler = (e) => {
+      this.setState({ [e.target.name]: e.target.value })
+    }
+
+    logout = () => {
+      localStorage.removeItem("user");
     }
 
     showUsersProfile(currentUser){
@@ -84,31 +94,25 @@ export default  class Korisnik extends Component {
                   id="imeprezime"
                   label="Ime i prezime"
                   autoFocus
+                  onChange={this.changeHandler}
                   value={k?.imeprezime}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
+              <Input
+                  placeholder={k?.adresa}
+                  type="text"
                   name="adresa"
-                  fullWidth
-                  id="adresa"
-                  label="Adresa"
-                  autoFocus
-                  value={k?.adresa}
-                />
+                  onChange={this.changeHandler}
+                ></Input>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
+                <Input
+                  placeholder={k?.email}
+                  type="text"
                   name="email"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email adresa"
-                  autoFocus
-                  value={k?.email}
-                />
+                  onChange={this.changeHandler}
+                ></Input>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -118,6 +122,7 @@ export default  class Korisnik extends Component {
                   id="datumrodjenja"
                   label="Datum rođenja"
                   autoFocus
+                  onChange={this.changeHandler}
                   value={k?.datumrodjenja}
                 />
               </Grid>
@@ -129,6 +134,7 @@ export default  class Korisnik extends Component {
                   id="telefon"
                   label="Kontakt telefon"
                   autoFocus
+                  onChange={this.changeHandler}
                   value={k?.telefon}
                 />
               </Grid>
@@ -141,6 +147,7 @@ export default  class Korisnik extends Component {
                   id="korisnickoime"
                   label="Korisničko ime"
                   autoFocus
+                  onChange={this.changeHandler}
                   value={k?.korisnickoime}
                 />
               </Grid>
@@ -153,6 +160,7 @@ export default  class Korisnik extends Component {
                   id="uloga"
                   label="Uloga"
                   autoFocus
+                  onChange={this.changeHandler}
                   value={k?.uloga}
                 />
               </Grid>
@@ -163,9 +171,20 @@ export default  class Korisnik extends Component {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    onClick={this.handleEdit}
+                    onClick={this.handleUpdate(korisnik)}
                     >
                         Potvrdi
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={this.logout()}
+                    >
+                      Odjavi se
                     </Button>
                   </Grid>
               </Grid>
