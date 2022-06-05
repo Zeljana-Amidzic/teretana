@@ -8,15 +8,19 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import './style.css';
-
 import { setAxiosInterceptors } from "../../services/auth-one";
 import { deleteVezba, getAllVezbe } from "../../services/vezba-service";
 import { Button } from "@material-ui/core";
-import Paginate from 'react-paginate';
+import { Pagination } from '../Pagination.js';
 import { useStepContext } from "@mui/material";
 import Vezba from "./Vezba/Vezba";
+import ReactPaginate from "react-paginate";
 
-const pageNumber = 1;
+const totalPages = 10;
+const keywords = "";
+const sortBy = "idvezba";
+const PAGE_SIZE = 2;
+const INITAL_PAGE = 1;
 
 class Vezbe extends React.Component {
     constructor(props){
@@ -24,13 +28,18 @@ class Vezbe extends React.Component {
         this.state = {
             vezbe: [],
             ukupno: '',
+            page: INITAL_PAGE,
+            sortBy: "idvezba",
+            keyword: "",
         };
         this.child = React.createRef();
         this.child2 = React.createRef();
+        this.child3 = React.createRef();
     }
 
     componentDidMount(){
         setAxiosInterceptors();
+        //this.loadVezbe(INITAL_PAGE, PAGE_SIZE, sortBy, keywords);
         this.loadVezbe();
     }
 
@@ -43,6 +52,16 @@ class Vezbe extends React.Component {
         })
         .catch((e) => console.log(e));
     };*/
+    /*loadVezbe = (page, size, sort, keyword) => {
+        getAllVezbe(page, size, sort, keyword).then((resp) => {
+            this.setState({
+                ...this.state,
+                vezbe: resp.data,
+            });
+        })
+        .catch((e) => console.log(e));
+    };*/
+
     loadVezbe = () => {
         getAllVezbe().then((resp) => {
             this.setState({
@@ -84,35 +103,41 @@ class Vezbe extends React.Component {
         this.currentPage = num; 
     }
 
-    changePage(selected){
-        this.pageNumber = selected;
-    }
+    /*changePage = (selected) => {
+        this.setState({
+            ...this.state,
+            INITAL_PAGE: selected,
+        });
+    };*/
 
+    changePage = ({ selected }) => {
+        this.setState({
+            ...this.state,
+            page: selected,
+        });
+    };
 
     render = () => {
         const {vezbe} = this.state;
-        const vezbePerPage = 4;
-        let pageNumber = 1;
+        const totalCount = vezbe.length;
+        
     // Get current posts
-        const pageVisited = pageNumber * vezbePerPage;
-        const currentVezbe = vezbe.slice(pageVisited, pageVisited + vezbePerPage);
-        const pageCount = Math.ceil(vezbe.length / vezbePerPage);
+        const pageVisited = INITAL_PAGE * PAGE_SIZE;
+        const currentVezbe = vezbe.slice(pageVisited, pageVisited + PAGE_SIZE);
+        const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
-        const changePage = ({ selected }) => {
-            pageNumber = selected;
-        };
         return(
+            
             <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
-                    <Button
-                    style={{backgroundColor: '#6106e0', alignItems: 'center', justifyContent: 'center', padding: 12, elevation: 3, margin: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: "center"}}>
-                        <span justifyContent="center" 
-                        style={{fontSize: 15, fontWeight: "bold", fontFamily: 'arial', color: 'white', display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'}}>Dodaj vezbu</span>
+                    <Button type="submit"
+                        color="primary"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 30, mb: 25 }}
+                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '250px' }}
+                        >
+                            Dodaj vežbu
                     </Button>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
@@ -136,13 +161,21 @@ class Vezbe extends React.Component {
                         <TableCell align="center">{vezba?.tezina}</TableCell>
                         <TableCell align="center">{vezba?.grupamisica}</TableCell>
                         <TableCell align="right">
-                            <Button style={{backgroundColor: '#42cc19', padding: 12, elevation: 3, alignItems: 'center', justifyContent: 'center'}}>
-                                <span style={{fontSize: 15, fontWeight: "bold", fontFamily: 'arial', color: 'white', textAlign: 'center'}}>Izmeni</span>
+                            <Button type="submit"
+                                color="default"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}>
+                                Izmeni
                             </Button>
                         </TableCell>
                         <TableCell>
-                            <Button style={{backgroundColor: '#e00e06', alignItems: 'center', justifyContent: 'center', padding: 12, elevation: 3}}>
-                            <span style={{fontSize: 15, fontWeight: "bold", fontFamily: 'arial', color: 'white', justifyContent: 'center'}}>Obrisi</span>
+                            <Button type="submit"
+                                color="secondary"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}>
+                            Obriši
                             </Button>
                         </TableCell>
                     </TableRow>
@@ -151,11 +184,11 @@ class Vezbe extends React.Component {
                 </Table>
             </TableContainer>
             <br/>
-            <Paginate
+            <ReactPaginate
             previousLabel={"Prethodna"}
-            nextLabel={"Sledeca"}
+            nextLabel={"Sledeća"}
             pageCount={pageCount}
-            onPageChange={changePage}
+            onPageChange={this.changePage}
             containerClassName={"paginationBttns"}
             previousLinkClassName={"previousBttn"}
             nextLinkClassName={"nextBttn"}

@@ -1,5 +1,5 @@
 export { default as Navbar } from './Navbar/Navbar';
-export { default as Proizvodi } from './Proizvodi/Proizvodi';
+export { default as Prodavnica } from './Proizvodi/Prodavnica';
 export { default as Korisnici } from './Korisnici/Korisnici';
 export { default as HomePage } from './Stranice/HomePage/HomePage';
 export { default as Registracija } from './Stranice/Registracija/Registracija';
@@ -8,3 +8,4 @@ export { default as Vezbe } from './Vezbe/Vezbe';
 export { default as Clanarine } from './Clanarine/Clanarine';
 export { default as Planovi } from './Planovi/Planovi';
 export { default as Korisnik } from './Korisnici/Korisnik/Korisnik';
+export { default as Proizvodi } from './Proizvodi/Proizvodi';

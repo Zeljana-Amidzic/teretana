@@ -12,6 +12,8 @@ function Navbar() {
 
   const showSidebar = () => setSidebar(!sidebar);
 
+  const logged = localStorage.getItem("user");
+
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
@@ -28,15 +30,15 @@ function Navbar() {
               </Link>
             </li>
             {Sidebar.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
           </ul>
         </nav>
       </IconContext.Provider>

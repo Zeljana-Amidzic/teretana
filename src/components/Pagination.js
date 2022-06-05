@@ -21,39 +21,45 @@ export const Pagination = ({ onPageChange, totalPages = Infinity }) => {
     return(
       <div className="card-footer py-4 bg-dark">
         <ul className="pagination justify-content-end mb-0">
-          {
-            currentPage !== 1 &&
-            <li>
-              <Link to="/"
-              className="page-link bg-dark tex-white border-gray"
-              style={{ color: 'white' }}
-              onClick={handlePageChangeClick(currentPage - 1)}>
-              <i className="fa fa-angle-left"></i>
-              </Link>
-            </li>
-          }{
-            [anchoredPage - 1, anchoredPage, anchoredPage + 1].map((page, i) =>
-              page <= totalPages &&
-              <li key={i} className={`page-item ${page === currentPage ? 'transparent' : ''}`}>
-                <Link to="/"
-                className={`page-link ${page === currentPage ? 'border-darker bg-darker' : 'border-gray bg-dark'}`}
-                onClick={handlePageChangeClick(page)}>
-                </Link>
-              </li>
-            )
-          }{
-            currentPage < totalPages &&
-            <li className="page-item">
-                <Link
-                    to="/"
-                    className="page-link bg-dark tex-white border-gray"
-                    style={{ color: 'white' }}
-                    onClick={handlePageChangeClick(currentPage + 1)}
-                >
-                    <i className="fa fa-angle-right" ></i>
-                </Link>
-            </li>
-        }
+        {
+                    currentPage !== 1 &&
+                    <li className="page-item">
+                        <Link
+                            to="/"
+                            className="page-link bg-dark tex-white border-gray"
+                            style={{ color: 'white' }}
+                            onClick={handlePageChangeClick(currentPage - 1)}
+                        >
+                            <i className="fa fa-angle-left"></i>
+                        </Link>
+                    </li>
+                }
+          {[anchoredPage - 1, anchoredPage, anchoredPage + 1].map((page, i) =>
+                    page <= totalPages &&
+                    <li key={i} className={`page-item ${page === currentPage ? 'transparent' : ''}`}>
+                        <Link
+                            to="/"
+                            className={`page-link ${page === currentPage ? 'border-darker bg-darker' : 'border-gray bg-dark'}`}
+                            
+                            onClick={handlePageChangeClick(page)}
+                        >
+                            {page}
+                        </Link>
+                    </li>
+                )}
+                {
+                    currentPage < totalPages &&
+                    <li className="page-item">
+                        <Link
+                            to="/"
+                            className="page-link bg-dark tex-white border-gray"
+                            style={{ color: 'white' }}
+                            onClick={handlePageChangeClick(currentPage + 1)}
+                        >
+                            <i className="fa fa-angle-right" ></i>
+                        </Link>
+                    </li>
+                }
         </ul>
       </div>
     )

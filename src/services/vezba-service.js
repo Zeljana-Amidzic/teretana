@@ -2,7 +2,7 @@ import { API_VEZBA } from "../api_routes";
 import Axios from "axios";
 
 /*export function getAllVezbe(number, size, sort, keyword) {
-  return Axios.get(API_VEZBA + `?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
+  return Axios.get(API_VEZBA + `?pageNo=${number-1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
 }*/
 
 export function getAllVezbe(){

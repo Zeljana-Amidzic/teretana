@@ -17,9 +17,9 @@ export function insertKorisnik(korisnik, callback) {
   });
 }
 
-export function updateKorisnik(korisnik, callback) {
-  Axios.put(API_KORISNIK + `/${korisnik.idkorisnik}`, korisnik).then(() => {
-    callback();
+export function updateKorisnik(korisnik, idkorisnik) {
+  Axios.put(API_KORISNIK+ `/${idkorisnik}`, korisnik).then(() => {
+    alert("Izmena " + korisnik?.imeprezime);
   }).catch((e) => {
     console.log(e);
   });

@@ -2,7 +2,7 @@ import { Container, makeStyles, Paper, responsiveFontSizes, TextField } from "@m
 import React, { Component, useState } from "react";
 import { getAccountFromToken } from "../../../services/auth-one";
 import authService from "../../../services/auth-service";
-import { getAllKorisnike, getKorisnik } from "../../../services/korisnik-service";
+import { getAllKorisnike, getKorisnik, updateKorisnik } from "../../../services/korisnik-service";
 import { setAxiosInterceptors } from "../../../services/auth-one";
 import { Button, Grid } from '@material-ui/core';
 import Box from '@mui/material/Box';
@@ -10,6 +10,11 @@ import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } fro
 import useStyles from './korisnik-style';
 import { Input } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import Clan from "./Clan";
+import Zaposlen from "./Zaposlen";
+import { Link } from "react-router-dom";
+import { getByIdZaposleni } from '../../../services/zaposleni-service';
+import { ContactSupport } from "@material-ui/icons";
 
 const PAGE_SIZE = 2;
 const INITAL_PAGE = 1;
@@ -33,11 +38,17 @@ export default  class Korisnik extends Component {
         setAxiosInterceptors();
     }
 
-    handleUpdate = (korisnik) => (e) => {
+    /*handleUpdate = (korisnik) => (e) => {
         this.child.current.setState({
             edit: true,
             ...korisnik,
         });
+    }*/
+    handleUpdate = (korisnik, idkorisnik) => {
+      console.log(idkorisnik);
+      updateKorisnik(korisnik,idkorisnik).then((resp) => {
+        alert("Uspesna izmena podataka");
+      });
     }
 
     changeHandler = (e) => {
@@ -45,7 +56,10 @@ export default  class Korisnik extends Component {
     }
 
     logout = () => {
-      localStorage.removeItem("user");
+      this.setState({korisnik: []}, () => {
+        //localStorage.removeItem("user");
+        localStorage.clear();
+      });
     }
 
     showUsersProfile(currentUser){
@@ -164,14 +178,24 @@ export default  class Korisnik extends Component {
                   value={k?.uloga}
                 />
               </Grid>
+              {k?.uloga === 'clan' &&
+                <Clan clan={k}/>
+              }
+              {k?.uloga === 'admin' &&
+                <Zaposlen idkorisnik={k?.idkorisnik}/>
+              }
+              {k?.uloga === 'trener' &&
+                <p>Trener</p>
+              }
               <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Button
                     type="submit"
+                    color="primary"
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    onClick={this.handleUpdate(korisnik)}
+                    onClick={() => this.handleUpdate(k, k?.idkorisnik)}
                     >
                         Potvrdi
                     </Button>
@@ -179,18 +203,30 @@ export default  class Korisnik extends Component {
                   <Grid item xs={12}>
                     <Button
                     type="submit"
+                    color="secondary"
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    onClick={this.logout()}
+                    onClick={this.logout}
                     >
                       Odjavi se
                     </Button>
                   </Grid>
               </Grid>
               </Grid>
-                </Box>))}
-            </Grid>) : <p>Nema korisnika za prikazivanje</p>
+              </Box>))}
+            </Grid>) :
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100vh'
+                }}>
+                <h1>Niste prijavljeni...</h1>
+                <Link to="/prijava" className="btn btn-primary">
+                Prijavi se
+                </Link>
+                </div>
             }
             </Container>
         );
