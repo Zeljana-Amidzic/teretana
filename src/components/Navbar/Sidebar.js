@@ -23,12 +23,6 @@ export const Sidebar = [
     cName: 'nav-text'
   },
   {
-    title: 'Prijavi se',
-    path: '/prijava',
-    icon: <IoIcons.IoIosAdd />,
-    cName: 'nav-text'
-  },
-  {
     title: 'Profil',
     path: '/profil',
     icon: <IoIcons.IoIosPerson />,
@@ -61,6 +55,33 @@ export const Sidebar = [
   {
     title: 'Korisnici',
     path: '/korisnici',
+    icon: <IoIcons.IoMdPeople />,
+    cName: 'nav-text'
+  }
+];
+
+export const SidebarNotLogged = [
+  {
+    title: 'Početna',
+    path: '/',
+    icon: <AiIcons.AiFillHome />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Prijavi se',
+    path: '/prijava',
+    icon: <IoIcons.IoIosAdd />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Članarine',
+    path: '/clanarine',
+    icon: <FaIcons.FaEnvelopeOpenText />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Treneri',
+    path: '/trener',
     icon: <IoIcons.IoMdPeople />,
     cName: 'nav-text'
   },

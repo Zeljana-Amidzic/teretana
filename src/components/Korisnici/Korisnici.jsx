@@ -12,6 +12,7 @@ import Users from './Users';
 import { setAxiosInterceptors } from '../../services/auth-one';
 import { getAllKorisnike } from '../../services/korisnik-service';
 import { Label } from '@material-ui/icons';
+import AddKorisnik from './Korisnik/AddKorisnik';
 
 const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
 const PAGE_SIZE = 20;
@@ -64,7 +65,7 @@ export default class Korisnici extends Component {
     .catch((e) => console.log(e));
   };
 
-  handleInsert = () => {
+  handleInsert = (korisnik) => {
     console.log("insert");
   }
 
@@ -77,92 +78,7 @@ export default class Korisnici extends Component {
     const {korisnici} = this.state;
     return (
       <>
-      <Container>
-      <Paper elevation={3} style={paperStyle}>
-      <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Korisnici</h1>
-      <Grid container spacing={2} style={{alignContent: 'center', justifyContent: 'center'}}>
-              <Grid item xs={12}>
-              <label>Ime i prezime:  </label>
-              <Input
-                  type="text"
-                  name="imeprezime"
-                  onChange={this.changeHandler}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-                <label>Datum rođenja:  </label>
-              <Input
-                  type="date"
-                  name="datumrodjenja"
-                  onChange={this.changeHandler}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Telefon:   </label>
-                <Input
-                  type="tel"
-                  name="telefon"
-                  onChange={this.changeHandler}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Email:   </label>
-              <Input
-                  type="email"
-                  name="email"
-                  onChange={this.changeHandler}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Adresa stanovanja:   </label>
-              <Input
-                  type="text"
-                  name="adresa"
-                  onChange={this.changeHandler}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Uloga:   </label>
-              <Input
-                  type="text" 
-                  name="uloga"
-                  placeholder='(admin, trener, clan)'
-                  onChange={this.changeHandler}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Korisničko ime:   </label>
-              <Input
-                  type="text"
-                  name="korisnickoime"
-                  onChange={this.changeHandler}
-                ></Input>
-               </Grid>
-               <Grid item xs={12}>
-               <label>Lozinka:   </label>
-                <Input
-                  type="text"
-                  name="lozinka"
-                  onChange={this.changeHandler}
-                ></Input>
-               </Grid>
-              <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Button
-                    type="submit"
-                    color="secondary"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={this.handleInsert}
-                    >
-                      Dodaj korisnika
-                    </Button>
-                  </Grid>
-              </Grid>
-          </Grid>
-      </Paper>
-    </Container>
+      <AddKorisnik/>
       <Container>
       <Paper elevation={3} style={paperStyle}>
       <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Korisnici</h1>

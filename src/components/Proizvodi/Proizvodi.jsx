@@ -6,19 +6,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Container , Button, Grid} from '@material-ui/core';
+import { Input } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { setAxiosInterceptors } from "../../services/auth-one";
-import { Button } from "@material-ui/core";
 import { Pagination } from '../Pagination.js';
 import { useStepContext } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import { deleteProizvod, getAllProizvode } from "../../services/proizvod-service";
+import AddProizvod from "./Proizvod/AddProizvod";
 
 const totalPages = 10;
 const keywords = "";
 const sortBy = "idvezba";
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 20;
 const INITAL_PAGE = 1;
+const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
+
 export default class Proizvodi extends Component{
     constructor(props){
         super(props);
@@ -114,6 +118,10 @@ export default class Proizvodi extends Component{
         });
     };
 
+    changeHandler = (e) => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
     render = () => {
         const {proizvodi} = this.state;
         const totalCount = proizvodi.length;
@@ -124,18 +132,10 @@ export default class Proizvodi extends Component{
         const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
         return(
-            
+            <>
+            <AddProizvod />
             <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
-                    <Button type="submit"
-                        color="primary"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 30, mb: 25 }}
-                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '250px' }}
-                        >
-                            Dodaj vežbu
-                    </Button>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
                         <TableRow>
@@ -149,7 +149,7 @@ export default class Proizvodi extends Component{
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                {currentProizvodi.map((proizvod) => (
+                {proizvodi.map((proizvod) => (
                     <TableRow
                         key={proizvod?.naziv}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -196,6 +196,7 @@ export default class Proizvodi extends Component{
             disabledClassName={"paginationDisabled"}
             activeClassName={"paginationActive"}
             />
-        </div>)
+        </div>
+        </>)
     }
 }

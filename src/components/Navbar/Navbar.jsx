@@ -3,16 +3,18 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import { Sidebar } from './Sidebar';
+import { Sidebar, SidebarNotLogged } from './Sidebar';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
+import { getRoleFromToken } from '../../services/auth-one';
 
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  const logged = localStorage.getItem("user");
+  const logged =  localStorage.getItem("user");
+  console.log(logged);
 
   return (
     <>
@@ -29,7 +31,17 @@ function Navbar() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-            {Sidebar.map((item, index) => {
+            {logged !== null && Sidebar.map((item, index) => {
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+              {logged === null && SidebarNotLogged.map((item, index) => {
                 return (
                   <li key={index} className={item.cName}>
                     <Link to={item.path}>

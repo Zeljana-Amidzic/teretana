@@ -9,9 +9,9 @@ export function getAllVezbe(){
   return Axios.get(API_VEZBA);
 }
 
-export function insertVezba(vezba, callback) {
+export function insertVezba(vezba) {
   Axios.post(API_VEZBA, vezba).then((resp) => {
-    callback();
+    alert("Vezba je dodata");
   }).catch((e) => {
     console.log(e);
   });
@@ -19,7 +19,7 @@ export function insertVezba(vezba, callback) {
 
 export function updateVezba(vezba, callback) {
   Axios.put(API_VEZBA + `/${vezba.idvezba}`, vezba).then(() => {
-    callback();
+    alert("Vezba je izmenjena");
   }).catch((e) => {
     console.log(e);
   });

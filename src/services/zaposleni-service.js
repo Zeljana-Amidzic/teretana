@@ -9,17 +9,17 @@ export function getByIdzaposleni(idkorisnik) {
   return Axios.get(API_ZAPOSLENI + `/${idkorisnik}`);
 }
 
-export function insertZaposleni(korisnik, callback) {
+export function insertZaposleni(korisnik) {
   Axios.post(API_ZAPOSLENI, korisnik).then((resp) => {
-    callback();
+    alert("Korisnik je dodat");
   }).catch((e) => {
     console.log(e);
   });
 }
 
-export function updateZaposleni(korisnik, callback) {
+export function updateZaposleni(korisnik) {
   Axios.put(API_ZAPOSLENI + `/${korisnik.idkorisnik}`, korisnik).then(() => {
-    callback();
+    alert("Korisnik je izmenjen");
   }).catch((e) => {
     console.log(e);
   });

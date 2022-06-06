@@ -5,17 +5,17 @@ export function getAllPlanove(number, size, sort, keyword) {
   return Axios.get(API_PLAN + `?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
 }
 
-export function insertPlan(plan, callback) {
+export function insertPlan(plan) {
   Axios.post(API_PLAN, plan).then((resp) => {
-    callback();
+    alert("Plan je dodat");
   }).catch((e) => {
     console.log(e);
   });
 }
 
-export function updatePlan(plan, callback) {
+export function updatePlan(plan) {
   Axios.put(API_PLAN + `/${plan.idplan}`, plan).then(() => {
-    callback();
+    alert("Plan je izmenjen");
   }).catch((e) => {
     console.log(e);
   });

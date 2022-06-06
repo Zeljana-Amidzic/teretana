@@ -9,17 +9,17 @@ export function getAllProizvode(){
   return Axios.get(API_PROIZVOD);
 }
 
-export function insertProizvod(proizvod, callback) {
+export function insertProizvod(proizvod) {
   Axios.post(API_PROIZVOD, proizvod).then((resp) => {
-    callback();
+    alert("Proizvod je dodat");
   }).catch((e) => {
     console.log(e);
   });
 }
 
-export function updateProizvod(proizvod, callback) {
+export function updateProizvod(proizvod) {
   Axios.put(API_PROIZVOD + `/${proizvod.idproizvod}`, proizvod).then(() => {
-    callback();
+    alert("Proizvod je izmenjen");
   }).catch((e) => {
     console.log(e);
   });

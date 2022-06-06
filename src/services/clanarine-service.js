@@ -5,17 +5,17 @@ export function getAllClanarine(number, size, sort, keyword) {
   return Axios.get(API_CLANARINA + `?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
 }
 
-export function insertclanarina(clanarina, callback) {
+export function insertclanarina(clanarina) {
   Axios.post(API_CLANARINA, clanarina).then((resp) => {
-    callback();
+    alert("Clanarina je dodata");
   }).catch((e) => {
     console.log(e);
   });
 }
 
-export function updateclanarina(clanarina, callback) {
+export function updateclanarina(clanarina) {
   Axios.put(API_CLANARINA + `/${clanarina.idclanarina}`, clanarina).then(() => {
-    callback();
+    alert("Clanarina je izmenjena");
   }).catch((e) => {
     console.log(e);
   });

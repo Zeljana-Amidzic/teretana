@@ -9,9 +9,9 @@ export function getKorisnik(korisnickoime) {
   return Axios.get(API_KORISNIK + `/${korisnickoime}`);
 }
 
-export function insertKorisnik(korisnik, callback) {
+export function insertKorisnik(korisnik) {
   Axios.post(API_KORISNIK, korisnik).then((resp) => {
-    callback();
+    alert("Korisnik je dodat");
   }).catch((e) => {
     console.log(e);
   });
@@ -19,7 +19,7 @@ export function insertKorisnik(korisnik, callback) {
 
 export function updateKorisnik(korisnik, idkorisnik) {
   Axios.put(API_KORISNIK+ `/${idkorisnik}`, korisnik).then(() => {
-    alert("Izmena " + korisnik?.imeprezime);
+    alert("Korisnik je izmenjen");
   }).catch((e) => {
     console.log(e);
   });
