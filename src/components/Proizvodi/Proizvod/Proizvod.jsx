@@ -20,6 +20,10 @@ class Proizvod extends Component {
         };
     }
 
+    handleKupovinu = () => {
+        console.log("kupovina");
+    }
+
     render = () => {
         const proizvod = this.state;
 
@@ -47,7 +51,7 @@ class Proizvod extends Component {
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing className={useStyles.cardActions}>
-                    <IconButton aria-label="Dodaj u korpu">
+                    <IconButton aria-label="Dodaj u korpu" onClick={this.handleKupovinu}>
                         <AddShoppingCart/>
                     </IconButton>
                 </CardActions>

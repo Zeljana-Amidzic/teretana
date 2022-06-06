@@ -9,3 +9,4 @@ export { default as Clanarine } from './Clanarine/Clanarine';
 export { default as Planovi } from './Planovi/Planovi';
 export { default as Korisnik } from './Korisnici/Korisnik/Korisnik';
 export { default as Proizvodi } from './Proizvodi/Proizvodi';
+export { default as updateProizvod } from './Proizvodi/Proizvod/UpdateProizvod';

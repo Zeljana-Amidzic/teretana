@@ -15,12 +15,14 @@ import { useStepContext } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import { deleteProizvod, getAllProizvode } from "../../services/proizvod-service";
 import AddProizvod from "./Proizvod/AddProizvod";
+import Search from "../Search";
 
 const totalPages = 10;
 const keywords = "";
 const sortBy = "idvezba";
 const PAGE_SIZE = 20;
 const INITAL_PAGE = 1;
+let searchTerm = "";
 const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
 
 export default class Proizvodi extends Component{
@@ -36,6 +38,7 @@ export default class Proizvodi extends Component{
         this.child = React.createRef();
         this.child2 = React.createRef();
         this.child3 = React.createRef();
+        this.handleEditProizvod = this.handleEditProizvod.bind(this);
     }
 
     componentDidMount(){
@@ -73,11 +76,9 @@ export default class Proizvodi extends Component{
         .catch((e) => console.log(e));
     };
 
-    handleEditProizvod = (proizvod) => {
-        this.child.current.setState({
-            edit: true,
-            ...proizvod,
-        });
+    handleEditProizvod = (idproizvod) => {
+        console.log("menjala bih proizvod sa id" + idproizvod);
+        this.props.history.push(`http://localhost:3000/updateproizvod/${idproizvod}`);
     };
 
     handleDeleteProizvod = (id) => {
@@ -122,6 +123,10 @@ export default class Proizvodi extends Component{
         this.setState({ [e.target.name]: e.target.value })
     }
 
+    searchHandler = (e) => {
+        searchTerm = e.target.value;
+    }
+
     render = () => {
         const {proizvodi} = this.state;
         const totalCount = proizvodi.length;
@@ -137,51 +142,9 @@ export default class Proizvodi extends Component{
             <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
-                        <TableRow>
-                            <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv vežbe</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Cena</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Neto težina</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Vrsta</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Na stanju</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                        </TableRow>
-                    </TableHead>
                     <TableBody>
-                {proizvodi.map((proizvod) => (
-                    <TableRow
-                        key={proizvod?.naziv}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <TableCell component="th" scope="row">
-                            {proizvod?.naziv}
-                        </TableCell>
-                        <TableCell align="center">{proizvod?.cena}</TableCell>
-                        <TableCell align="center">{proizvod?.netotezina}</TableCell>
-                        <TableCell align="center">{proizvod?.vrstaproizvoda}</TableCell>
-                        <TableCell align="center">{proizvod?.stanje}</TableCell>
-                        <TableCell align="right">
-                            <Button type="submit"
-                                color="default"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}>
-                                Izmeni
-                            </Button>
-                        </TableCell>
-                        <TableCell>
-                            <Button type="submit"
-                                color="secondary"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}>
-                            Obriši
-                            </Button>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
+                        <Search proizvodi={proizvodi}/>
+                    </TableBody>
                 </Table>
             </TableContainer>
             <br/>

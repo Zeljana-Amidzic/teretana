@@ -9,6 +9,10 @@ export function getAllProizvode(){
   return Axios.get(API_PROIZVOD);
 }
 
+export function getProizvodById(id){
+  return Axios.get(API_PROIZVOD + '/' + id);
+}
+
 export function insertProizvod(proizvod) {
   Axios.post(API_PROIZVOD, proizvod).then((resp) => {
     alert("Proizvod je dodat");
@@ -17,8 +21,8 @@ export function insertProizvod(proizvod) {
   });
 }
 
-export function updateProizvod(proizvod) {
-  Axios.put(API_PROIZVOD + `/${proizvod.idproizvod}`, proizvod).then(() => {
+export function updateProizvod(proizvod, idproizvod) {
+  Axios.put(API_PROIZVOD + `/${idproizvod}`, proizvod).then(() => {
     alert("Proizvod je izmenjen");
   }).catch((e) => {
     console.log(e);
