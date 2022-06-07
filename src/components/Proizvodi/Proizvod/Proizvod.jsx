@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } from "@material-ui/core";
 import { AddShoppingCart } from '@material-ui/icons';
-
+import Stripe from "react-stripe-checkout";
+import { stripePayment, stripeKey } from "../../Stripe/StripeHelp";
 import proteinc from "C:/Users/Zeljana/Desktop/faks/ERP/TeretanaFE/teretana/src/pics/protein-c.png";
 
 import useStyles from './styles';
+import Axios from "axios";
+import { insertKupovina } from "../../../services/kupovina-service";
 
 class Proizvod extends Component {
 
@@ -20,8 +23,19 @@ class Proizvod extends Component {
         };
     }
 
-    handleKupovinu = () => {
-        console.log("kupovina");
+    handleToken = (token) => {
+        let kupovina = {idkupovina: 100, datum: "2022-11-11", iznos: this.state.cena * 1, placeno: true, proizvod: this.state.idproizvod};
+        Axios.post("http://localhost:8083/teretana/payment/charge", "", {
+            headers: {
+                token: token.id,
+                amount: this.state.cena,
+            },
+        }).then(() => {
+            alert("Uspesna kupovina");
+        }).catch((err) => {
+            console.log(err);
+        });
+        insertKupovina(kupovina);
     }
 
     render = () => {
@@ -51,9 +65,8 @@ class Proizvod extends Component {
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing className={useStyles.cardActions}>
-                    <IconButton aria-label="Dodaj u korpu" onClick={this.handleKupovinu}>
-                        <AddShoppingCart/>
-                    </IconButton>
+                    <Stripe stripeKey={stripeKey} token={this.handleToken}
+                    billingAddress shippingAddress amount={proizvod.cena}/>
                 </CardActions>
             </Card>
         )
