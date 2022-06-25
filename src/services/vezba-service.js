@@ -17,7 +17,7 @@ export function insertVezba(vezba) {
   });
 }
 
-export function updateVezba(vezba, callback) {
+export function updateVezba(vezba) {
   Axios.put(API_VEZBA + `/${vezba.idvezba}`, vezba).then(() => {
     alert("Vezba je izmenjena");
   }).catch((e) => {

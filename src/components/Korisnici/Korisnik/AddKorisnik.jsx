@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Paper from '@mui/material/Paper';
 import { Container , Button, Grid} from '@material-ui/core';
 import { Input } from "@mui/material";
-import { insertProizvod } from "../../../services/proizvod-service";
 import { insertKorisnik } from "../../../services/korisnik-service";
 
 const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}

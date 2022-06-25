@@ -16,6 +16,9 @@ function Navbar() {
   const logged =  localStorage.getItem("user");
   console.log(logged);
 
+  const logRole = getRoleFromToken();
+  console.log(logRole);
+
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>

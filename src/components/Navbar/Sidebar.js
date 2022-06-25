@@ -17,6 +17,12 @@ export const Sidebar = [
     cName: 'nav-text'
   },
   {
+    title: 'Pregled kupovina',
+    path: '/kupovine',
+    icon: <FaIcons.FaCartPlus />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Proizvodi',
     path: '/proizvodi',
     icon: <FaIcons.FaCartPlus />,

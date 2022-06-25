@@ -2,55 +2,43 @@ import React, { Component } from "react";
 import Paper from '@mui/material/Paper';
 import { Container , Button, Grid} from '@material-ui/core';
 import { Input } from "@mui/material";
-import { insertProizvod } from "../../../services/proizvod-service";
+import { insertVezba } from "../../../services/vezba-service";
 
 const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
 
-export default class AddProizvod extends Component {
+export default class AddVezba extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          idproizvod: 100,
+          idvezba: 100,
           naziv: props.naziv,
-          cena: props.cena,
-          netotezina: props.netotezina,
-          vrstaproizvoda: props.vrstaproizvoda,
-          stanje: props.stanje
+          tezina: props.tezina,
+          grupamisica: props.grupamisica
         };
         this.changeNaziv = this.changeNaziv.bind(this);
-        this.changeCena = this.changeCena.bind(this);
-        this.changeNetotezina = this.changeNetotezina.bind(this);
-        this.changeVrstaproizvoda = this.changeVrstaproizvoda.bind(this);
-        this.changeStanje = this.changeStanje.bind(this);
+        this.changeTezina = this.changeTezina.bind(this);
+        this.changeGrupamisica = this.changeGrupamisica.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
     }
 
     changeNaziv = (e) => {
         this.setState({ naziv: e.target.value })
     }
-    changeCena = (e) => {
-        this.setState({ cena: e.target.value })
+    changeTezina = (e) => {
+        this.setState({ tezina: e.target.value })
     }
-    changeNetotezina = (e) => {
-        this.setState({ netotezina: e.target.value })
-    }
-    changeVrstaproizvoda = (e) => {
-        this.setState({ vrstaproizvoda: e.target.value })
-    }
-    changeStanje = (e) => {
-        this.setState({ stanje: e.target.value })
+    changeGrupamisica = (e) => {
+        this.setState({ grupamisica: e.target.value })
     }
 
     handleAdd = (e) => {
         e.preventDefault();
-        let proizvod = {idproizvod: 100, naziv: this.state.naziv, cena: this.state.cena, netotezina: this.state.netotezina, vrstaproizvoda: this.state.vrstaproizvoda, stanje: this.state.stanje};
+        let vezba = {idproizvod: 100, naziv: this.state.naziv, tezina: this.state.tezina, grupamisica: this.state.grupamisica};
 
-        insertProizvod(proizvod);
+        insertVezba(vezba);
         this.setState({ naziv: " " });
-        this.setState({ cena: " " });
-        this.setState({ netotezina: " " });
-        this.setState({ vrstaproizvoda: " " });
-        this.setState({ stanje: " " });
+        this.setState({ tezina: " " });
+        this.setState({ grupamisica: " " });
     }
 
     render = () => {
@@ -70,43 +58,23 @@ export default class AddProizvod extends Component {
                     ></Input>
                 </Grid>
               <Grid item xs={12}>
-                <label>Cena:  </label>
-              <Input
-                  type="text"
-                  name="cena"
-                  onChange={this.changeCena}
-                  style={{width: "370px"}}
-                  value={this.state.cena}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Neto težina:   </label>
+              <label>Težina:   </label>
                 <Input
                   type="text"
-                  name="netotezina"
-                  onChange={this.changeNetotezina}
+                  name="tezina"
+                  onChange={this.changeTezina}
                   style={{width: "330px"}}
-                  value={this.state.netotezina}
+                  value={this.state.tezina}
                 ></Input>
               </Grid>
               <Grid item xs={12}>
-              <label>Vrsta proizvoda:   </label>
+              <label>Grupa mišića:   </label>
               <Input
                   type="text"
-                  name="vrstaproizvoda"
-                  onChange={this.changeVrstaproizvoda}
+                  name="grupamisica"
+                  onChange={this.changeGrupamisica}
                   style={{width: "300px"}}
-                  value={this.state.vrstaproizvoda}
-                ></Input>
-              </Grid>
-              <Grid item xs={12}>
-              <label>Na stanju:   </label>
-              <Input
-                  type="text"
-                  name="stanje"
-                  onChange={this.changeStanje}
-                  style={{width: "345px"}}
-                  value={this.state.stanje}
+                  value={this.state.grupamisica}
                 ></Input>
               </Grid>
               <Grid container spacing={2}>

@@ -11,7 +11,7 @@ export default class UpdateProizvod extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          idproizvod: 1,
+          idproizvod: props.idproizvod,
           naziv: props.naziv,
           cena: props.cena,
           netotezina: props.netotezina,

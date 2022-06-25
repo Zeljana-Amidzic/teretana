@@ -15,6 +15,7 @@ import { Pagination } from '../Pagination.js';
 import { useStepContext } from "@mui/material";
 import Vezba from "./Vezba/Vezba";
 import ReactPaginate from "react-paginate";
+import AddVezba from "./Vezba/AddVezba";
 
 const totalPages = 10;
 const keywords = "";
@@ -127,7 +128,8 @@ class Vezbe extends React.Component {
         const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
         return(
-            
+            <>
+            <AddVezba />
             <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
                     <Button type="submit"
@@ -195,7 +197,9 @@ class Vezbe extends React.Component {
             disabledClassName={"paginationDisabled"}
             activeClassName={"paginationActive"}
             />
-        </div>)
+        </div>
+        </>
+        )
     }
 }
 

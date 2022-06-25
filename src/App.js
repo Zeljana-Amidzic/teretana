@@ -1,7 +1,7 @@
 import './App.css';
 
 import { Link, Route, Router, Routes } from 'react-router-dom';
-import { Navbar, Prodavnica, Korisnici, HomePage, Registracija, Prijava, Vezbe, Clanarine, Planovi, Korisnik, Proizvodi } from './components';
+import { Navbar, Prodavnica, Korisnici, HomePage, Registracija, Prijava, Vezbe, Clanarine, Planovi, Korisnik, Proizvodi, Kupovine } from './components';
 import { render } from 'react-dom';
 import React, { useEffect, useState } from 'react';
 import authService from './services/auth-service';
@@ -49,6 +49,7 @@ function App() {
           <Route path='/profil' element={<Korisnik/>} />
           <Route path='/proizvodi' element={<Proizvodi/>} />
           <Route path='/updateproizvod/:idproizvod' element={<UpdateProizvod/>} />
+          <Route path='/kupovine' element={<Kupovine/>} />
         </Routes>
       </div>
   )

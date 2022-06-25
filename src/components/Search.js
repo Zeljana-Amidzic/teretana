@@ -10,9 +10,8 @@ import UpdateProizvod from "./Proizvodi/Proizvod/UpdateProizvod";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Search({proizvodi}){
+export default function Search({ proizvodi }){
     const [searchTerm, setSearchTerm] = useState("");
-
     const navigate = useNavigate();
 
     const handleEditProizvod = (idproizvod) => {
@@ -28,21 +27,21 @@ export default function Search({proizvodi}){
             placeholder="Pretraga..."
             onChange={(e) => {setSearchTerm(e.target.value);}}/>
             <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
-                        <TableRow>
-                            <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv vežbe</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Cena</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Neto težina</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Vrsta</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Na stanju</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                        </TableRow>
-                    </TableHead>
+                    <TableRow>
+                        <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv vežbe</TableCell>
+                        <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Cena</TableCell>
+                        <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Neto težina</TableCell>
+                        <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Vrsta</TableCell>
+                        <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Na stanju</TableCell>
+                        <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
+                        <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
+                    </TableRow>
+            </TableHead>
             {
                 proizvodi.filter((val) => {
                     if(searchTerm == ""){
                         return val
-                    }else if(val.naziv.toLowerCase().includes(searchTerm.toLowerCase())){
+                    }else if(val.naziv.toLowerCase().includes(searchTerm.toLowerCase()) || val.vrstaproizvoda.toLowerCase().includes(searchTerm.toLowerCase())){
                         return val
                     }
                 }).map((val, key) => {

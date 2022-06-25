@@ -14,7 +14,7 @@ export function getProizvodById(id){
 }
 
 export function insertProizvod(proizvod) {
-  Axios.post(API_PROIZVOD, proizvod).then((resp) => {
+  Axios.post(API_PROIZVOD, proizvod).then(() => {
     alert("Proizvod je dodat");
   }).catch((e) => {
     console.log(e);

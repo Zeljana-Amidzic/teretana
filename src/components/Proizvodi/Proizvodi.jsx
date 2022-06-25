@@ -19,12 +19,12 @@ import Search from "../Search";
 
 const totalPages = 10;
 const keywords = "";
-const sortBy = "idvezba";
+const sortBy = "idproizvod";
 const PAGE_SIZE = 20;
 const INITAL_PAGE = 1;
 let searchTerm = "";
 const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
-
+const {zaglavlja} = ["Naziv vežbe", "Cena", "Neto težina", "Vrsta", "Na stanju", " ", " "];
 export default class Proizvodi extends Component{
     constructor(props){
         super(props);
@@ -32,7 +32,7 @@ export default class Proizvodi extends Component{
             proizvodi: [],
             ukupno: '',
             page: INITAL_PAGE,
-            sortBy: "idvezba",
+            sortBy: "idproizvod",
             keyword: "",
         };
         this.child = React.createRef();
