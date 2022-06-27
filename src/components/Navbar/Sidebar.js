@@ -36,7 +36,7 @@ export const Sidebar = [
   },
   {
     title: 'Plan',
-    path: '/plan',
+    path: '/planovi',
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },

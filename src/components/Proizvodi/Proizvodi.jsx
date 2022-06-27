@@ -16,6 +16,7 @@ import ReactPaginate from "react-paginate";
 import { deleteProizvod, getAllProizvode } from "../../services/proizvod-service";
 import AddProizvod from "./Proizvod/AddProizvod";
 import Search from "../Search";
+import UpdateProizvod from "./Proizvod/UpdateProizvod";
 
 const totalPages = 10;
 const keywords = "";
@@ -138,7 +139,16 @@ export default class Proizvodi extends Component{
 
         return(
             <>
-            <AddProizvod />
+            <div>
+            <div className="row" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '100%'}}>
+                <div className="column" style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: '1'}}>
+                    <AddProizvod/>
+                </div>
+                <div className="column" style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: '1'}}>
+                    <UpdateProizvod/>
+                </div>
+            </div>
+            </div>
             <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">

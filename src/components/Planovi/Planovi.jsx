@@ -14,6 +14,8 @@ import { Pagination } from '../Pagination.js';
 import { useStepContext } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import { deletePlan, getAllPlanove } from "../../services/plan-service";
+import AddPlan from "./Plan/AddPlan";
+import UpdatePlan from "./Plan/UpdatePlan";
 
 const totalPages = 10;
 const keywords = "";
@@ -29,19 +31,19 @@ export default class Planovi extends Component{
             planovi: [],
             ukupno: '',
             page: INITAL_PAGE,
-            sortBy: "idplan",
-            keyword: "",
+            sortBy: sortBy,
+            keyword: keywords,
         };
         this.child = React.createRef();
         this.child2 = React.createRef();
         this.child3 = React.createRef();
-        this.handleEditProizvod = this.handleEditProizvod.bind(this);
+        this.handleEditPlan = this.handleEditPlan.bind(this);
     }
 
     componentDidMount(){
         setAxiosInterceptors();
         //this.loadVezbe(INITAL_PAGE, PAGE_SIZE, sortBy, keywords);
-        this.loadPlanove();
+        this.loadPlanove(INITAL_PAGE, PAGE_SIZE, this.state.sortBy, this.state.keyword);
     }
 
     loadPlanove = (page, PAGE_SIZE, sortBy, keyword) => {
@@ -65,12 +67,12 @@ export default class Planovi extends Component{
     };*/
 
     handleEditPlan = (idplan) => {
-        console.log("menjala bih proizvod sa id" + idproizvod);
+        console.log("menjala bih proizvod sa id" + idplan);
         this.props.history.push(`http://localhost:3000/updateplan/${idplan}`);
     };
 
-    handleDeleteProizvod = (id) => {
-        deleteProizvod(id).then(this.refreshPlan).catch((e) => console.log(e));
+    handleDeletePlan = (id) => {
+        deletePlan(id).then(this.refreshPlan).catch((e) => console.log(e));
     };
 
     setUkupno = () => {
@@ -126,22 +128,58 @@ export default class Planovi extends Component{
 
         return(
             <>
-            
+            <div>
+            <div className="row" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '100%'}}>
+                <div className="column" style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: '1'}}>
+                    <AddPlan/>
+                </div>
+                <div className="column" style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: '1'}}>
+                    <UpdatePlan/>
+                </div>
+            </div>
+            </div>
             <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableBody>
                         <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
                             <TableRow>
-                                <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv vežbe</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Cena</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Neto težina</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Vrsta</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Na stanju</TableCell>
+                                <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv plana</TableCell>
+                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Grupa misica</TableCell>
+                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Broj vežbi</TableCell>
+                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Trajanje</TableCell>
                                 <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
                                 <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
                             </TableRow>
                         </TableHead>
+                        {planovi.map((p) => (
+                            <TableRow key={p?.idplan}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                <TableCell component="th" scope="row">{p?.naziv}</TableCell>
+                                <TableCell align="center">{p?.grupamisica}</TableCell>
+                                <TableCell align="center">{p?.brojvezbi}</TableCell>
+                                <TableCell align="center">{p?.trajanje}</TableCell>
+                                <TableCell align="right">
+                            <Button type="submit"
+                                color="default"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick = {() => this.handleEditPlan(p?.idplan)}>
+                                Izmeni
+                            </Button>
+                            </TableCell>
+                            <TableCell>
+                            <Button type="submit"
+                                color="secondary"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}>
+                            Obriši
+                            </Button>
+                            </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>

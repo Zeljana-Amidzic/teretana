@@ -4,7 +4,7 @@ import { Container , Button, Grid} from '@material-ui/core';
 import { Input } from "@mui/material";
 import { insertProizvod } from "../../../services/proizvod-service";
 
-const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
+const paperStyle={padding:'50px 20px', width:500, margin:"20px auto"}
 
 export default class AddProizvod extends Component {
     constructor(props) {
@@ -57,8 +57,8 @@ export default class AddProizvod extends Component {
         return(
             <Container>
             <Paper elevation={3} style={paperStyle}>
-                <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Proizvod</h1>
-                <Grid container spacing={2} style={{alignContent: 'center', justifyContent: 'center'}}>
+                <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Dodaj proizvod</h1>
+                <Grid container spacing={2} >
                     <Grid item xs={12}>
                     <label>Naziv:  </label>
                     <Input
@@ -116,7 +116,7 @@ export default class AddProizvod extends Component {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 30, mb: 25 }}
-                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '550px' }}
+                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '420px' }}
                         onClick={this.handleAdd}
                         >
                            Dodaj

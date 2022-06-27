@@ -5,6 +5,10 @@ export function getAllPlanove(number, size, sort, keyword) {
   return Axios.get(API_PLAN + `?pageNo=${number - 1}&pageSize=${size}&sortBy=${sort}&keyword=${keyword}`);
 }
 
+export function getPlanById(id){
+  return Axios.get(API_PLAN+`${id}`);
+}
+
 export function insertPlan(plan) {
   Axios.post(API_PLAN, plan).then((resp) => {
     alert("Plan je dodat");

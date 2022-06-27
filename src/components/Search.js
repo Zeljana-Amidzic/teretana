@@ -16,6 +16,7 @@ export default function Search({ proizvodi }){
 
     const handleEditProizvod = (idproizvod) => {
     // 👇️ navigate to /contacts
+        console.log("id: " + idproizvod);
         navigate(`/updateproizvod/${idproizvod}`);
     };
 

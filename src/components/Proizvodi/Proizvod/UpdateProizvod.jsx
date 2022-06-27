@@ -4,14 +4,18 @@ import { Container , Button, Grid, ThemeProvider} from '@material-ui/core';
 import { Input } from "@mui/material";
 import { getProizvodById, updateProizvod } from "../../../services/proizvod-service";
 import { setAxiosInterceptors } from "../../../services/auth-one";
+import GetIdFromUrl from "./Funkcije";
 
-const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
+const paperStyle={padding:'50px 20px', width:500, margin:"20px auto"};
+const queryParams = new URLSearchParams(window.location.search);
+//const id = queryParams.get("idproizvod");
+//const { id } = this.props.match.params;
 
 export default class UpdateProizvod extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          idproizvod: props.idproizvod,
+          idproizvod: this.getId,
           naziv: props.naziv,
           cena: props.cena,
           netotezina: props.netotezina,
@@ -33,6 +37,11 @@ export default class UpdateProizvod extends Component {
             this.setState({naziv: proiz.naziv, cena: proiz.cena, netotezina: proiz.netotezina,
             vrstaproizvoda: proiz.vrstaproizvoda, stanje: proiz.stanje});
         });
+    }
+
+    getId = () => {
+      let id = GetIdFromUrl();
+      return id;
     }
 
     changeNaziv = (e) => {
@@ -64,8 +73,8 @@ export default class UpdateProizvod extends Component {
         return(
             <Container>
             <Paper elevation={3} style={paperStyle}>
-                <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Proizvod</h1>
-                <Grid container spacing={2} style={{alignContent: 'center', justifyContent: 'center'}}>
+                <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Izmeni proizvod</h1>
+                <Grid container spacing={2}>
                     <Grid item xs={12}>
                     <label>Naziv:  </label>
                     <Input
@@ -123,7 +132,7 @@ export default class UpdateProizvod extends Component {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 30, mb: 25 }}
-                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '550px' }}
+                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '420px', alignContent: 'center' }}
                         onClick={this.handleUpdate}
                         >
                            Potvrdi
