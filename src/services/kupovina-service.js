@@ -1,4 +1,4 @@
-import { API_KUPOVINA } from "../api_routes";
+import { API_KUPOVINA, API_PAYMENTS } from "../api_routes";
 import Axios from "axios";
 
 /*export function getAllProizvode(number, size, sort, keyword) {
@@ -7,6 +7,10 @@ import Axios from "axios";
 
 export function getAllKupovine(){
   return Axios.get(API_KUPOVINA);
+}
+
+export function getAllPayments(){
+  return Axios.get(API_PAYMENTS);
 }
 
 export function getKupovinaById(id){

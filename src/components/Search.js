@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import { Container , Button, Grid} from '@material-ui/core';
 import UpdateProizvod from "./Proizvodi/Proizvod/UpdateProizvod";
 import { useNavigate } from "react-router-dom";
+import { deleteProizvod } from "../services/proizvod-service";
 
 
 export default function Search({ proizvodi }){
@@ -19,6 +20,10 @@ export default function Search({ proizvodi }){
         console.log("id: " + idproizvod);
         navigate(`/updateproizvod/${idproizvod}`);
     };
+
+    const handleDeleteProizvod = (idproizvod) => {
+        deleteProizvod(idproizvod);
+    }
 
     return (
         <div>
@@ -73,7 +78,8 @@ export default function Search({ proizvodi }){
                                 color="secondary"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}>
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick={() => handleDeleteProizvod(val?.idproizvod)}>
                             Obriši
                             </Button>
                         </TableCell>

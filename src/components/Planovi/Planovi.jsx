@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Container , Button, Grid} from '@material-ui/core';
 import { Input } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, gridDensityRowHeightSelector, GridValueGetterParams } from '@mui/x-data-grid';
 import { setAxiosInterceptors } from "../../services/auth-one";
 import { Pagination } from '../Pagination.js';
 import { useStepContext } from "@mui/material";
@@ -16,6 +16,8 @@ import ReactPaginate from "react-paginate";
 import { deletePlan, getAllPlanove } from "../../services/plan-service";
 import AddPlan from "./Plan/AddPlan";
 import UpdatePlan from "./Plan/UpdatePlan";
+import Plan from "./Plan/Plan";
+import Tabela from "../Tabela";
 
 const totalPages = 10;
 const keywords = "";
@@ -66,9 +68,9 @@ export default class Planovi extends Component{
         .catch((e) => console.log(e));
     };*/
 
-    handleEditPlan = (idplan) => {
-        console.log("menjala bih proizvod sa id" + idplan);
-        this.props.history.push(`http://localhost:3000/updateplan/${idplan}`);
+    handleEditPlan = (plan) => {
+        console.log("menjala bih proizvod sa id" + plan);
+        //this.props.history.push(`http://localhost:3000/updateplan/${idplan}`);
     };
 
     handleDeletePlan = (id) => {
@@ -117,85 +119,24 @@ export default class Planovi extends Component{
         searchTerm = e.target.value;
     }
 
-    render = () => {
-        const {planovi} = this.state;
-        const totalCount = planovi.length;
-        
-    // Get current posts
-        const pageVisited = INITAL_PAGE * PAGE_SIZE;
-        const currentProizvodi = planovi.slice(pageVisited, pageVisited + PAGE_SIZE);
-        const pageCount = Math.ceil(totalCount / PAGE_SIZE);
-
+    render() {
         return(
             <>
-            <div>
-            <div className="row" style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '100%'}}>
-                <div className="column" style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: '1'}}>
-                    <AddPlan/>
-                </div>
-                <div className="column" style={{display: 'flex', flexDirection: 'column', flexBasis: '100%', flex: '1'}}>
-                    <UpdatePlan/>
-                </div>
-            </div>
-            </div>
-            <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableBody>
-                        <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
-                            <TableRow>
-                                <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv plana</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Grupa misica</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Broj vežbi</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Trajanje</TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                                <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        {planovi.map((p) => (
-                            <TableRow key={p?.idplan}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell component="th" scope="row">{p?.naziv}</TableCell>
-                                <TableCell align="center">{p?.grupamisica}</TableCell>
-                                <TableCell align="center">{p?.brojvezbi}</TableCell>
-                                <TableCell align="center">{p?.trajanje}</TableCell>
-                                <TableCell align="right">
-                            <Button type="submit"
-                                color="default"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
-                                onClick = {() => this.handleEditPlan(p?.idplan)}>
-                                Izmeni
-                            </Button>
-                            </TableCell>
-                            <TableCell>
-                            <Button type="submit"
-                                color="secondary"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}>
-                            Obriši
-                            </Button>
-                            </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <br/>
-            <ReactPaginate
-            previousLabel={"Prethodna"}
-            nextLabel={"Sledeća"}
-            pageCount={pageCount}
-            onPageChange={this.changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-            />
-        </div>
-        </>)
+                <Tabela
+                ref={this.child2}
+                data={this.state.planovi.map(plan => [plan.idplan, plan.naziv, plan.grupamisica, plan.brojvezbi, plan.trajanje,
+                <button type="submit" className="btn btn-info save-btn" onClick={this.handleEditPlan(plan)}>
+                    Izmeni
+                </button>,
+                <button type="button" className="btn btn-danger save-btn" onClick={this.handleDeletePlan(plan.idplan)}>
+                    Obrisi
+                </button>])}
+                load={this.loadPlanove}
+                title={'Planovi'}
+                headerTitles={['Naziv plana', 'Grupa misica', 'Broj vezbi', ' Trajanje (min)']}
+                headerTitleProperties={['naziv', 'grupamisica', 'brojvezbi', 'trajanje']}
+                totalCount={this.state.ukupno}/>
+            </>
+        );
     }
 }

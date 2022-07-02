@@ -77,9 +77,9 @@ export default class Proizvodi extends Component{
         .catch((e) => console.log(e));
     };
 
-    handleEditProizvod = (idproizvod) => {
-        console.log("menjala bih proizvod sa id" + idproizvod);
-        this.props.history.push(`http://localhost:3000/updateproizvod/${idproizvod}`);
+    handleEditProizvod = (proizvod) => {
+        console.log("menjala bih proizvod sa id" + proizvod);
+        //this.props.history.push(`http://localhost:3000/updateproizvod/${idproizvod}`);
     };
 
     handleDeleteProizvod = (id) => {
@@ -126,6 +126,10 @@ export default class Proizvodi extends Component{
 
     searchHandler = (e) => {
         searchTerm = e.target.value;
+    }
+
+    handleIzmenu = (p) => {
+
     }
 
     render = () => {

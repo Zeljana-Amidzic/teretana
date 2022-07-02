@@ -30,5 +30,9 @@ export function updateProizvod(proizvod, idproizvod) {
 }
 
 export function deleteProizvod(id) {
-    return Axios.delete(API_PROIZVOD + `/${id}`);
+    return Axios.delete(API_PROIZVOD + `/${id}`).then(() => {
+      alert("Proizvod sa ID=" + id + " je obrisan.");
+    }).catch((e) => {
+      console.log(e);
+    });
 }

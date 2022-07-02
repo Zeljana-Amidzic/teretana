@@ -11,3 +11,4 @@ export const API_CLANARINA = "http://localhost:8083/teretana/clanarina";
 export const API_KUPOVINA = "http://localhost:8083/teretana/kupovina";
 export const API_KUPLJENIPROIZVOD = "http://localhost:8083/teretana/kuplejniproizvod";
 export const API_AUTH = "http://localhost:8083/authenticate";
+export const API_PAYMENTS = "http://localhost:8083/teretana/payment";

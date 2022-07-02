@@ -24,18 +24,27 @@ class Proizvod extends Component {
     }
 
     handleToken = (token) => {
-        let kupovina = {idkupovina: 100, datum: "2022-11-11", iznos: this.state.cena * 1, placeno: true, proizvod: this.state.idproizvod};
-        Axios.post("http://localhost:8083/teretana/payment/charge", "", {
+        let date = new Date();
+        let kupovina = {idkupovina: 100, datum: date.getDate(), iznos: this.state.cena * 1, placeno: true, proizvod: this.state.idproizvod};
+        insertKupovina(kupovina);
+        
+        Axios.post("http://localhost:8083/teretana/payment/charge", kupovina, {
             headers: {
                 token: token.id,
-                amount: this.state.cena,
+                amount: this.state.cena / 100,
             },
         }).then(() => {
             alert("Uspesna kupovina");
         }).catch((err) => {
             console.log(err);
         });
-        insertKupovina(kupovina);
+        
+        /*let kupljeniproizvod = {idkupljeniproizvod: 100, kolicina: 1, cena: this.state.cena, kupovina: 3, proizvod: this.state.idproizvod};
+        Axios.post("http://localhost:8083/teretana/kupljeniproizvod", kupljeniproizvod).then(() => {
+            console.log("Kupljeni proizvod");
+        }).catch((e) => {
+            console.log(e);
+        });*/
     }
 
     render = () => {
