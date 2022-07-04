@@ -133,8 +133,8 @@ export default class Planovi extends Component{
                 </button>])}
                 load={this.loadPlanove}
                 title={'Planovi'}
-                headerTitles={['Naziv plana', 'Grupa misica', 'Broj vezbi', ' Trajanje (min)']}
-                headerTitleProperties={['naziv', 'grupamisica', 'brojvezbi', 'trajanje']}
+                headerTitles={['ID', 'Naziv plana', 'Grupa misica', 'Broj vezbi', ' Trajanje (min)']}
+                headerTitleProperties={['idplan', 'naziv', 'grupamisica', 'brojvezbi', 'trajanje']}
                 totalCount={this.state.ukupno}/>
             </>
         );

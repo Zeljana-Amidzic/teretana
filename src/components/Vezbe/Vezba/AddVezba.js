@@ -45,7 +45,7 @@ export default class AddVezba extends Component {
         return(
             <Container>
             <Paper elevation={3} style={paperStyle}>
-                <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Proizvod</h1>
+                <h1 style={{ fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}>Vežbe</h1>
                 <Grid container spacing={2} style={{alignContent: 'center', justifyContent: 'center'}}>
                     <Grid item xs={12}>
                     <label>Naziv:  </label>

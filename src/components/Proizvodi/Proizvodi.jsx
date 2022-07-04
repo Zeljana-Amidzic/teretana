@@ -10,8 +10,6 @@ import { Container , Button, Grid} from '@material-ui/core';
 import { Input } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { setAxiosInterceptors } from "../../services/auth-one";
-import { Pagination } from '../Pagination.js';
-import { useStepContext } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import { deleteProizvod, getAllProizvode } from "../../services/proizvod-service";
 import AddProizvod from "./Proizvod/AddProizvod";
@@ -21,7 +19,7 @@ import UpdateProizvod from "./Proizvod/UpdateProizvod";
 const totalPages = 10;
 const keywords = "";
 const sortBy = "idproizvod";
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 2;
 const INITAL_PAGE = 1;
 let searchTerm = "";
 const paperStyle={padding:'50px 20px', width:600,margin:"20px auto"}
@@ -32,6 +30,7 @@ export default class Proizvodi extends Component{
         this.state = {
             proizvodi: [],
             ukupno: '',
+            currentProizvodi: [],
             page: INITAL_PAGE,
             sortBy: "idproizvod",
             keyword: "",
@@ -116,6 +115,7 @@ export default class Proizvodi extends Component{
     changePage = ({ selected }) => {
         this.setState({
             ...this.state,
+            currentProizvodi: this.state.proizvodi.slice(selected, selected + PAGE_SIZE),
             page: selected,
         });
     };
@@ -135,10 +135,7 @@ export default class Proizvodi extends Component{
     render = () => {
         const {proizvodi} = this.state;
         const totalCount = proizvodi.length;
-        
-    // Get current posts
         const pageVisited = INITAL_PAGE * PAGE_SIZE;
-        const currentProizvodi = proizvodi.slice(pageVisited, pageVisited + PAGE_SIZE);
         const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
         return(
@@ -157,7 +154,8 @@ export default class Proizvodi extends Component{
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableBody>
-                        <Search proizvodi={proizvodi}/>
+                        {this.state.page === 1 && <Search proizvodi={this.state.proizvodi.slice(INITAL_PAGE, INITAL_PAGE + PAGE_SIZE)}/>}
+                        {this.state.page !== 1 && <Search proizvodi={this.state.currentProizvodi}/>}
                     </TableBody>
                 </Table>
             </TableContainer>

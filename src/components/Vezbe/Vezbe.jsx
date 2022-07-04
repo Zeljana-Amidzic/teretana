@@ -16,6 +16,7 @@ import { useStepContext } from "@mui/material";
 import Vezba from "./Vezba/Vezba";
 import ReactPaginate from "react-paginate";
 import AddVezba from "./Vezba/AddVezba";
+import Tabela from "../Tabela";
 
 const totalPages = 10;
 const keywords = "";
@@ -74,10 +75,11 @@ class Vezbe extends React.Component {
     };
 
     handleEditVezbe = (vezba) => {
-        this.child.current.setState({
+        /*this.child.current.setState({
             edit: true,
             ...vezba,
-        });
+        });*/
+        console.log("edit vezba " + vezba.naziv);
     };
 
     handleDeleteVezba = (id) => {
@@ -119,86 +121,25 @@ class Vezbe extends React.Component {
     };
 
     render = () => {
-        const {vezbe} = this.state;
-        const totalCount = vezbe.length;
-        
-    // Get current posts
-        const pageVisited = INITAL_PAGE * PAGE_SIZE;
-        const currentVezbe = vezbe.slice(pageVisited, pageVisited + PAGE_SIZE);
-        const pageCount = Math.ceil(totalCount / PAGE_SIZE);
 
         return(
             <>
             <AddVezba />
-            <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
-            <TableContainer component={Paper}>
-                    <Button type="submit"
-                        color="primary"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 30, mb: 25 }}
-                        style={{ padding: 12, elevation: 3, margin: 8, display: 'flex', flexDirection: 'column', width: '250px' }}
-                        >
-                            Dodaj vežbu
-                    </Button>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
-                        <TableRow>
-                            <TableCell style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white' }}>Naziv vežbe</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Težina izvođenja</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}}>Grupa mišića</TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed' }}></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                {currentVezbe.map((vezba) => (
-                    <TableRow
-                        key={vezba?.naziv}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <TableCell component="th" scope="row">
-                            {vezba?.naziv}
-                        </TableCell>
-                        <TableCell align="center">{vezba?.tezina}</TableCell>
-                        <TableCell align="center">{vezba?.grupamisica}</TableCell>
-                        <TableCell align="right">
-                            <Button type="submit"
-                                color="default"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}>
-                                Izmeni
-                            </Button>
-                        </TableCell>
-                        <TableCell>
-                            <Button type="submit"
-                                color="secondary"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}>
-                            Obriši
-                            </Button>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-                </Table>
-            </TableContainer>
-            <br/>
-            <ReactPaginate
-            previousLabel={"Prethodna"}
-            nextLabel={"Sledeća"}
-            pageCount={pageCount}
-            onPageChange={this.changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-            />
-        </div>
-        </>
+            <Tabela
+                ref={this.child2}
+                data={this.state.vezbe.map(vezba => [vezba.idvezba, vezba.naziv, vezba.tezina, vezba.grupamisica,
+                <button type="submit" className="btn btn-info save-btn" onClick={this.handleEditVezbe(vezba)}>
+                    Izmeni
+                </button>,
+                <button type="button" className="btn btn-danger save-btn" onClick={this.handleDeleteVezba(vezba.idvezba)}>
+                    Obriši
+                </button>])}
+                load={this.loadVezbe}
+                title={'Vežbe'}
+                headerTitles={['ID', 'Naziv vežbe', 'Težina izvođenja', 'Grupa mišića']}
+                headerTitleProperties={['idvezba', 'naziv', 'tezina', 'grupamisica']}
+                totalCount={this.state.ukupno}/>
+            </>
         )
     }
 }

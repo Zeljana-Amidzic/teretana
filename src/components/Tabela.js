@@ -3,18 +3,20 @@ import React, { Component } from "react";
 import { setAxiosInterceptors } from "../services/auth-one";
 import { Pagination } from "./Pagination";
 import { Paper } from "@mui/material";
+import ReactPaginate from "react-paginate";
 
 const INITIAL_PAGE = 1;
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 20;
 const totalPages = 10;
 class Tabela extends Component{
     constructor(props){
         super(props);
         this.state = {
+            data: [],
+            currentData: [],
             page: INITIAL_PAGE,
             sortBy: '',
             keyword: "",
-            isDataChanged: false,
         };
         this.child = React.createRef();
     }
@@ -36,10 +38,11 @@ class Tabela extends Component{
         }
     }
 
-    onPageChanged = (p) => {
+    onPageChanged = ({ selected }) => {
         this.setState({
             ...this.state,
-            page: p,
+            currentData: this.state.data.slice(selected, selected + PAGE_SIZE),
+            page: selected,
         });
     };
 
@@ -50,37 +53,59 @@ class Tabela extends Component{
         });
     };
 
+
     render(){
         const { data, title, headerTitles, headerTitleProperties, totalCount } = this.props;
-
+        const {total} = data.length;
+        console.log("total "+totalCount);
+        const initialData = data.slice(INITIAL_PAGE, INITIAL_PAGE + PAGE_SIZE);
+        const pageCount = Math.ceil(total / PAGE_SIZE);
         return(
-            <div className="">
+            <div>
                 <br/>
+                <div className="container" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
                 <div className="py-5 text-center">
-                    <h2>{title}</h2>
+                    <h2 style={{fontSize: 40, fontWeight: "bold", fontFamily: 'sans-serif-condensed'}}>{title}</h2>
                 </div>
-                <div className="col-md-12 order-md-1" style={{display: 'flex', flexFlow: 'column', alignItems: 'center', maxWidth: '1120px', width: '90%', margin: '0 auto'}}>
-                    <div className="card-body py-4 bg-dark">
-                        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                <br/>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                             <TableHead style={{backgroundColor: '#b8babc', margin: 5, padding: 10}}>
                                 <TableRow>
                                     {headerTitles.map((headerTitle, i) => {
                                         return(
-                                            <TableCell align="right" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}} key={i} scope="col" className="clickable" onClick={() => this.onSortByChanged(headerTitleProperties[i])}>
+                                            <TableCell align="justify" style={{ fontSize: 25, fontWeight: "bold", fontFamily: 'sans-serif-condensed', color: 'white'}} key={i} scope="col" className="clickable" onClick={() => this.onSortByChanged(headerTitleProperties[i])}>
                                                 {headerTitle}
                                             </TableCell>
                                         );
                                     })}
                                 </TableRow>
                             </TableHead>
+                            {this.state.page === 1 &&
                             <TableBody>
-                                {data.map((item, i) => {
+                                {initialData.map((item, i) => {
                                     return(
                                         item && (
                                             <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                 {item.map((content, j) => {
                                                     return(
-                                                        <TableCell key={j} component="th" scope="row" align="center">{content}</TableCell>
+                                                        <TableCell key={j} component="th" scope="row" align="justify">{content}</TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        )
+                                    );
+                                })}
+                            </TableBody>}
+                            {this.state.page !== 1 && 
+                            <TableBody>
+                                {this.state.currentData.map((item, i) => {
+                                    return(
+                                        item && (
+                                            <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                {item.map((content, j) => {
+                                                    return(
+                                                        <TableCell key={j} component="th" scope="row" align="justify">{content}</TableCell>
                                                     );
                                                 })}
                                             </TableRow>
@@ -88,10 +113,20 @@ class Tabela extends Component{
                                     );
                                 })}
                             </TableBody>
+                            }
                         </Table>
-                        <Pagination onPageChanged={this.onPageChanged}
-                        totalPages={totalCount < PAGE_SIZE ? 1 : Math.ceil(totalCount / PAGE_SIZE) ?? totalPages}/>
-                    </div>
+                        <ReactPaginate
+                        previousLabel={"Prethodna"}
+                        nextLabel={"Sledeća"}
+                        pageCount={pageCount}
+                        onPageChange={this.onPageChanged}
+                        containerClassName={"paginationBttns"}
+                        previousLinkClassName={"previousBttn"}
+                        nextLinkClassName={"nextBttn"}
+                        disabledClassName={"paginationDisabled"}
+                        activeClassName={"paginationActive"}
+                    />
+                    </TableContainer>
                 </div>
             </div>
         );

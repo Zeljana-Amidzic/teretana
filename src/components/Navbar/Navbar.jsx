@@ -3,10 +3,11 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import { Sidebar, SidebarNotLogged } from './Sidebar';
+import { Sidebar, SidebarClan, SidebarNotLogged, SidebarTrener } from './Sidebar';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
-import { getRoleFromToken } from '../../services/auth-one';
+import { getRoleFromToken, setAxiosInterceptors, getAccountFromToken } from '../../services/auth-one';
+import { getAllKorisnike, getKorisnik } from '../../services/korisnik-service';
 
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
@@ -16,8 +17,8 @@ function Navbar() {
   const logged =  localStorage.getItem("user");
   console.log(logged);
 
-  const logRole = getRoleFromToken();
-  console.log(logRole);
+  const role = getRoleFromToken();
+  console.log("role " + role);
 
   return (
     <>
@@ -34,7 +35,7 @@ function Navbar() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-            {logged !== null && Sidebar.map((item, index) => {
+            {role == "admin"  && Sidebar.map((item, index) => {
                 return (
                   <li key={index} className={item.cName}>
                     <Link to={item.path}>
@@ -45,6 +46,26 @@ function Navbar() {
                 );
               })}
               {logged === null && SidebarNotLogged.map((item, index) => {
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+              {role == "trener"  && SidebarTrener.map((item, index) => {
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+              {role == "clan"  && SidebarClan.map((item, index) => {
                 return (
                   <li key={index} className={item.cName}>
                     <Link to={item.path}>
